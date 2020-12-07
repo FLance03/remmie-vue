@@ -1,7 +1,3 @@
 # remmie-vue
 
-Instructions:
-
-To start app, type in the terminal ___________.
-
-blablabla
+This is the README file for the remmie-vue repository.
