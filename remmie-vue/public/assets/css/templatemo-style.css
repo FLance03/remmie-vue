@@ -401,6 +401,26 @@ section.contact-form {
     background-color: rgba(83,91,160,1);
 }
 
+/* Custom shit i made for yall*/
+
+#card {
+    margin-top: 50px;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    background-color: #f7f7f7;
+    padding: 50px;
+}
+
+#ann-pic {
+    width: 50%;
+    height: 50%;
+    float: right;
+}
+
+#ann-text > p{
+    font-size: 20px;
+}
+
 
 /* Tables */
 

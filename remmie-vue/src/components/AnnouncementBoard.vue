@@ -1,11 +1,21 @@
 <template>
-  <div id="register">
-      <form action="">
-          <input type="text" name="email" placeholder="enter email"/>
-          <input type="text" name="username" placeholder="enter username"/>
-          <input type="password" name="password" placeholder="enter password"/>
-          <button>Register</button>
-      </form>
+  <div id="container-fluid">
+    <div id="row">
+      <div id="col-md-12">
+        <div id="card">
+          <h1>Announcement 1</h1>
+          <div class="row">
+            <div class="col" id="ann-text">
+              <p>We're selling buffet</p>
+            </div>
+            <div class="col">
+              <img src="assets/images/food1.jpg">
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
