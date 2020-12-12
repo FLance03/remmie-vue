@@ -9,7 +9,7 @@ app.get('/read/usertype',(req,res)=>{
     res.setHeader('Access-Control-Allow-Methods','GET');
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
-    res.send('admin');
+    res.send(req.query['choice']);
 });
 
 app.get('/read/staff',(req,res)=>{

@@ -22,7 +22,7 @@ export default {
     };
   },
   beforeMount() {
-    const url = "http://localhost:3000/read/usertype";
+    const url = "http://localhost:3000/read/usertype?choice=admin";
     
     axios.get(url).then(response => this.usertype = response.data);
     
