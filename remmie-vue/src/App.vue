@@ -21,8 +21,6 @@ export default {
       usertype: '',
     };
   },
-  computed: {
-  },
   beforeMount() {
     const url = "http://localhost:3000/read/usertype";
     

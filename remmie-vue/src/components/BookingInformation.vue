@@ -12,7 +12,7 @@ export default {
     return {
       currentPage: 1,
       infoPerPage: 5,
-      tableHead: ['Staff Name','Date Created'],
+      tableHead: ['User Name','Dates Booked','Status'],
       tableData: [],
       wholeData: [],
       pageNumbers: [],
@@ -20,8 +20,6 @@ export default {
   },
   components: {
     'info-table': table,
-  },
-  computed: {
   },
   methods: {
     changePage: function(page) {
@@ -38,18 +36,20 @@ export default {
         this.tableData.push([]);
         this.tableData[count].push(this.wholeData[i][0]);
         this.tableData[count].push(this.wholeData[i][1]);
+        this.tableData[count].push(this.wholeData[i][2]);
       }
     },
   },
   beforeMount() {
-    const url = "http://localhost:3000/read/staff";
+    const url = "http://localhost:3000/read/bookinginformation";
 
     axios.get(url).then((response) => {
       var i,count;
       for (count=0,i=0 ; i<response.data.length ; i++,count++){
         this.wholeData.push([]);
-        this.wholeData[count].push(response.data[i]['staffName']);
-        this.wholeData[count].push(response.data[i]['dateCreated']);
+        this.wholeData[count].push(response.data[i]['userName']);
+        this.wholeData[count].push(response.data[i]['dateBooked']);
+        this.wholeData[count].push(response.data[i]['status']);
       }
       this.updateInfo()
     }).catch( e => console.log(e));
