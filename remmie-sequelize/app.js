@@ -96,6 +96,52 @@ app.get('/read/bookinginformation',(req,res)=>{
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.send(JSON.stringify(test));
 });
+
+app.get('/read/roomorders',(req,res)=>{
+    let test = [
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 239", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "6 Nature's Spring bottle", "room" : "Room 512", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "5 Coca-cola, 2 Fried Chicken", "room" : "Room 311", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "1 Lechon Kawali, 1 Natures Spring bottle ", "room" : "Room 156", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "1 Nature's Spring bottle, 1 Fried Chicken", "room" : "Room 173", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 251", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 245", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 164", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "3 Grilled Butter Creamed Spinach Salmon", "room" : "Room 241", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 16", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 18", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 216", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 345", "status" : "Pending" },
+    ];
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods','GET');
+    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.send(JSON.stringify(test));
+});
+
+app.get('/read/roomcleaning', (req, res)=>{
+    let test = [
+        {"userName" : "Nick Clayton", "info" : "Toilet stuck", "room" : "Room 239", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 234", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 42", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "Towels", "room" : "Room 52", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 123", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 239", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "Towels", "room" : "Room 239", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 453", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 239", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 74", "status" : "Pending" },
+        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 356", "status" : "Pending" },
+       
+    ];
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.send(JSON.stringify(test));
+});
+
 app.listen('3000',(err)=>{
     if (err) throw err;
     console.log("Listening in Port 3000");
