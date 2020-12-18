@@ -1,8 +1,7 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Table from './views/Table'
-import Test from './views/Test'
-import Login from './views/Login'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Table from './views/Table';
+import Login from './views/Login';
 
 Vue.use(VueRouter);
 
@@ -11,17 +10,12 @@ export default new VueRouter({
         {
             path: "/Table",
             name: "Table",
-            component: Table
-        },
-        {
-            path: "/Test",
-            name: "Test",
-            component: Test
+            component: Table,
         },
         {
             path: "/",
             name: "Login",
-            component: Login
+            component: Login,
         },
     ]
 })
