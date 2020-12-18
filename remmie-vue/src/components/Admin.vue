@@ -34,8 +34,11 @@ export default {
   },
   methods: {
     changePage: function(page) {
+      if (page == 3){
+        this.$router.push({ name: 'Login'})
+      }
       this.page = page;
-    }
+    },
   }
 }
 </script>

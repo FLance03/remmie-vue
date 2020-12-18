@@ -1,15 +1,34 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const usertype='admin'
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cors());
+app.get('/isloggedin',(req,res)=>{
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods','GET');
+    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.send(false);
 
+});
+app.post('/authenticate',(req,res)=>{
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods','GET');
+    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.send(true);
+
+});
 app.get('/read/usertype',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
-    res.send(req.query['choice']);
+    res.send(usertype);
 });
 
 app.get('/read/staff',(req,res)=>{
