@@ -53,6 +53,7 @@
             </li>
           </ul>
         </nav>
+        
         <!-- Footer -->
         <footer id="footer">
           <p class="copyright">Copyright &copy; 2020 Chua, Go, Lim </p>

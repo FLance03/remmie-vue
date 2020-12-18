@@ -23,7 +23,7 @@ export default {
     return {
       page: 0,
       accountType: 'STAFF',
-      pages: ['Bookings','Room Orders','Room Cleaning'],
+      pages: ['Bookings','Room Orders','Room Cleaning', 'Logout'],
     };
   },
   components: {

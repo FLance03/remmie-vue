@@ -23,7 +23,7 @@ export default {
     return {
       page: 0,
       accountType: 'ADMIN',
-      pages: ['Dashboard','Announcement Board','Accounts'],
+      pages: ['Dashboard','Announcement Board','Accounts', 'Logout'],
     };
   },
   components: {

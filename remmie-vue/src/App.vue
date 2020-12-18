@@ -18,14 +18,14 @@ export default {
   },
   data() {
     return {
-      usertype: '',
+      usertype: 'staff',
     };
   },
   beforeMount() {
     const url = "http://localhost:3000/read/usertype?choice=admin";
     
     axios.get(url).then(response => this.usertype = response.data);
-    
+    console.log(this.usertype);
   },
 }
 </script>

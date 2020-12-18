@@ -805,9 +805,15 @@ section.buttons .container-fluid {
     background-color: rgba(83,91,160,0.25);
 }
 
-.border-rounded-button {
-    margin-bottom: 30px;
+.border-rounded-button-container {
+    justify-content: center;
+    align-items: center;
 }
+
+.border-rounded-button {
+    margin: 0px;
+}
+
 .border-rounded-button a {
     font-size: 14px;
     font-weight: 700;
@@ -823,6 +829,7 @@ section.buttons .container-fluid {
     background-color: rgba(83,91,160,0.0);
     border-radius: 20px;
 }
+
 .border-rounded-button a:hover {
     color: #fff;
     background-color: rgba(83,91,160,1);
