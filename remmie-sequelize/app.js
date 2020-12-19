@@ -117,6 +117,11 @@ app.get('/read/bookinginformation',(req,res)=>{
 });
 
 app.get('/read/roomorders',(req,res)=>{
+
+
+
+
+
     let test = [
         {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 239", "status" : "Pending" },
         {"userName" : "Nick Clayton", "orders" : "6 Nature's Spring bottle", "room" : "Room 512", "status" : "Pending" },
@@ -140,6 +145,11 @@ app.get('/read/roomorders',(req,res)=>{
 });
 
 app.get('/read/roomcleaning', (req, res)=>{
+
+
+
+
+
     let test = [
         {"userName" : "Nick Clayton", "info" : "Toilet stuck", "room" : "Room 239", "status" : "Pending" },
         {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 234", "status" : "Pending" },

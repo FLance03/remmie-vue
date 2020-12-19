@@ -1,8 +1,9 @@
+
 <template>
-  <div>
+  <div class="d-flex flex-row-reverse">
     <div class="col-md-5">
       <div
-        class="filled-rounded-button"
+        class="border-radius-button"
         data-toggle="modal"
         data-target="#modalLarge"
       >
@@ -26,10 +27,36 @@
           <div class="modal-body">
             <div class="form">
               <form class="">
-                <input type="text" placeholder="name" />
-                <input type="text" placeholder="email address" />
-                <input type="password" placeholder="password" />
-                <input type="password" placeholder="confirm password" />
+                <input
+                  v-model="fname"
+                  required
+                  type="text"
+                  placeholder="first name"
+                />
+                <input
+                  v-model="lname"
+                  required
+                  type="text"
+                  placeholder="last name"
+                />
+                <input
+                  v-model="email"
+                  required
+                  type="email"
+                  placeholder="email address"
+                />
+                <input
+                  v-model="pass"
+                  required
+                  type="password"
+                  placeholder="password"
+                />
+                <input
+                  v-model="cpass"
+                  required
+                  type="password"
+                  placeholder="confirm password"
+                />
               </form>
             </div>
           </div>
@@ -41,6 +68,8 @@
               type="button"
               class="btn btn-default btn-primary"
               data-glyphicon="glyphicon-ok"
+              data-dismiss="modal"
+              v-on:click="createStaff()"
             >
               Create
             </button>
@@ -53,7 +82,42 @@
 
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      modalShow: true,
+      fname: "",
+      lname: "",
+      email: "",
+      pass: "",
+      cpass: "",
+    };
+  },
+  methods: {
+    createStaff: function () {
+      console.log("Staff Account Created");
+      console.log(this.fname);
+      console.log(this.lname);
+      console.log(this.email);
+      console.log(this.pass);
+      console.log(this.cpass);
+
+      //Inserts inputted data into db - Daniel
+      // const url = "http://localhost:3000/write/createstaff";
+
+      // axios.get(url).then((response) => {
+      //   var i,count;
+      //   for (count=0,i=0 ; i<response.data.length ; i++,count++){
+      //     this.wholeData.push([]);
+      //     this.wholeData[count].push(response.data[i]['userName']);
+      //     this.wholeData[count].push(response.data[i]['dateBooked']);
+      //     this.wholeData[count].push(response.data[i]['status']);
+      //   }
+      //   this.updateInfo()
+      // }).catch( e => console.log(e));
+    },
+  },
+};
 </script>
 
 <style scoped>

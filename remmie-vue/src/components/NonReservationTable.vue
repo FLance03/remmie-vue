@@ -13,7 +13,7 @@
           <td v-for="(info, index) in record" v-bind:key="index">{{ info }}</td>
           <td v-if="service == true">
             <div class="border-rounded-button-container">
-              <div class="border-rounded-button">
+              <div class="border-rounded-button" v-on:click="confirm(record)">
                 <a href="#">Confirm</a>
               </div>
             </div>
@@ -46,6 +46,9 @@ export default {
   methods: {
     pageNumberClick: function (page) {
       this.$emit("changePage", page);
+    },
+    confirm: function (id) {
+      console.log(id);
     },
   },
 };
