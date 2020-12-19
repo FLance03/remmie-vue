@@ -2,17 +2,19 @@
 
 This is the README file for the remmie-vue repository.
 
-To copy this repo, create an empty folder in your PC and open it in VS Code. 
-In the terminal, type git clone https://github.com/kitdaniellim/remmie-vue.git to clone this repository.
+To copy this repository, do git clone https://github.com/kitdaniellim/remmie-vue.git in the directory where you want the files to be.
+
+### Run Node js
+```
+Open terminal and enter the following commands to run Node.
+cd remmie-sequelize
+node app
+```
 
 ### Run Vue 
 ```
+Open another terminal and enter the following commands to run Vue.
 cd remmie-vue
 npm run serve
 ```
 
-### Run Node js
-```
-cd remmie-sequelize
-node app
-```
