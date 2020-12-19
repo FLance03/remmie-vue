@@ -48,7 +48,7 @@ app.post('/accounts/users',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.send('aa');
 });
-app.listen('3000',(err)=>{
+app.listen('3001',(err)=>{
     if (err) throw err;
     console.log('Connected to port 3000');
 });

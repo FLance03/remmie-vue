@@ -57,22 +57,22 @@
                   type="password"
                   placeholder="confirm password"
                 />
-              </form>
-            </div>
-          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">
               Cancel
             </button>
             <button
-              type="button"
+              type="submit"
               class="btn btn-default btn-primary"
               data-glyphicon="glyphicon-ok"
-              data-dismiss="modal"
+              v-bind:data-dismiss="modalShow ? 'false' : 'modal'"
               v-on:click="createStaff()"
             >
               Create
             </button>
+          </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -102,6 +102,9 @@ export default {
       console.log(this.pass);
       console.log(this.cpass);
 
+      if (this.fname!='' && this.lname!='' && this.email!='' && this.pass!='' && this.cpass!='' && this.pass==this.cpass){
+        this.modalShow = false;
+      }
       //Inserts inputted data into db - Daniel
       // const url = "http://localhost:3000/write/createstaff";
 
