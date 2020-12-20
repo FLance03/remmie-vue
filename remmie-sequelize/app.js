@@ -2,11 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const usertype='admin'
+const usertype='admin'; // DELETE afterwards
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cors());
+
+//Controllers
+const user = require("./controllers/user");
+
 app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
@@ -31,40 +35,48 @@ app.get('/read/usertype',(req,res)=>{
     res.send(usertype);
 });
 
-app.get('/read/staff',(req,res)=>{
-    let test = [
-        {"staffName":"VincentA","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentB","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentC","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentD","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentE","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentF","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentG","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentH","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentI","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentJ","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentK","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentL","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentM","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentN","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentO","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentP","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentQ","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentR","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentS","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentT","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentU","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentV","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentW","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentX","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentY","dateCreated":"January 2, 2020"},
-        {"staffName":"VincentZ","dateCreated":"January 2, 2020"},
-    ];
+app.get('/read/staff',async (req,res)=>{
+    let data = await user.readStaff();
+    let response = [];
+    for (let i=0 ; i<data.length ; i++){
+        response.push({
+            "staffName" : data[i].first_name+' '+data[i].last_name,
+            "dateCreated" : data[i].date_created.toDateString().slice(4),
+        });
+    }
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
-    res.send(JSON.stringify(test));
+    res.send(JSON.stringify(response));
+    // let test = [
+    //     {"staffName":"VincentA","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentB","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentC","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentD","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentE","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentF","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentG","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentH","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentI","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentJ","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentK","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentL","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentM","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentN","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentO","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentP","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentQ","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentR","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentS","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentT","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentU","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentV","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentW","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentX","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentY","dateCreated":"January 2, 2020"},
+    //     {"staffName":"VincentZ","dateCreated":"January 2, 2020"},
+    // ];
 });
 app.get('/read/bookinginformation',(req,res)=>{
     let test = [

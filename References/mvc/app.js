@@ -23,6 +23,7 @@ app.get("/", async (req,res)=>{
         data: "Gorii",
         value: "Gwapo",
     });
+    console.log(value);
     // let value2 = await test.model.create({
     //     data: "Gorii",
     //     value: "Gwapo",
@@ -50,5 +51,5 @@ app.post('/accounts/users',(req,res)=>{
 });
 app.listen('3001',(err)=>{
     if (err) throw err;
-    console.log('Connected to port 3000');
+    console.log('Connected to port 3001');
 });

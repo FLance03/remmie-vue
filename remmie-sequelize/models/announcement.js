@@ -1,7 +1,7 @@
 const {DataTypes, DATE} = require("sequelize");
-const connection = require("../app");
+const connection = require("../dbconnection");
 
-const announcement = connection.sequelize.define("announcement",{
+const announcement = connection.sequelize.define("announcements",{
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -47,9 +47,8 @@ const announcement = connection.sequelize.define("announcement",{
 },
 {
   tableName: 'announcements',
-  createdAt: 'date_creatted',
+  createdAt: 'date_created',
   updatedAt: 'date_updated',
-  deletedAt: 'date_deleted',
 });
 
 exports.model = announcement;

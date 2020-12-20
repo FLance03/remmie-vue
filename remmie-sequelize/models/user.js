@@ -1,7 +1,7 @@
 const {DataTypes, DATE} = require("sequelize");
-const connection = require("../app");
+const connection = require("../dbconnection");
 
-const user = connection.sequelize.define("user",{
+const user = connection.sequelize.define("users",{
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -35,9 +35,8 @@ const user = connection.sequelize.define("user",{
 },
 {
   tableName: 'users',
-  createdAt: 'date_creatted',
+  createdAt: 'date_created',
   updatedAt: 'date_updated',
-  deletedAt: 'date_deleted',
 });
 
 exports.model = user;

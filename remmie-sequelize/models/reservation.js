@@ -1,7 +1,7 @@
 const {DataTypes, DATE} = require("sequelize");
-const connection = require("../app");
+const connection = require("../dbconnection");
 
-const reservation = connection.sequelize.define("reservation",{
+const reservation = connection.sequelize.define("reservations",{
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,
@@ -61,9 +61,8 @@ const reservation = connection.sequelize.define("reservation",{
 },
 {
   tableName: 'reservations',
-  createdAt: 'date_creatted',
+  createdAt: 'date_created',
   updatedAt: 'date_updated',
-  deletedAt: 'date_deleted',
 });
 
 exports.model = reservation;
