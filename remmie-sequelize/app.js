@@ -10,6 +10,7 @@ app.use(cors());
 
 //Controllers
 const user = require("./controllers/user");
+const announcements = require("./controllers/announcement");
 
 app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
@@ -17,8 +18,8 @@ app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.send(false);
-
 });
+
 app.post('/authenticate',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
@@ -33,6 +34,15 @@ app.get('/read/usertype',(req,res)=>{
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.send(usertype);
+});
+
+app.get('/read/announcements', async (req,res)=>{
+    let data = await announcements.readAnnouncements();
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods','GET');
+    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.send(JSON.stringify(data));
 });
 
 app.get('/read/staff',async (req,res)=>{
@@ -129,11 +139,6 @@ app.get('/read/bookinginformation',(req,res)=>{
 });
 
 app.get('/read/roomorders',(req,res)=>{
-
-
-
-
-
     let test = [
         {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 239", "status" : "Pending" },
         {"userName" : "Nick Clayton", "orders" : "6 Nature's Spring bottle", "room" : "Room 512", "status" : "Pending" },
@@ -157,11 +162,6 @@ app.get('/read/roomorders',(req,res)=>{
 });
 
 app.get('/read/roomcleaning', (req, res)=>{
-
-
-
-
-
     let test = [
         {"userName" : "Nick Clayton", "info" : "Toilet stuck", "room" : "Room 239", "status" : "Pending" },
         {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 234", "status" : "Pending" },

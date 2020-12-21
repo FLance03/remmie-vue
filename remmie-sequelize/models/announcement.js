@@ -10,10 +10,6 @@ const announcement = connection.sequelize.define("announcements",{
   hotel_id: {
     type: DataTypes.BIGINT,
     allowNull: false,
-    references: {
-      model: hotel,
-      key: 'id',
-    },
   },
   title: {
     type: DataTypes.STRING,
