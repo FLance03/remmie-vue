@@ -64,7 +64,7 @@ export default {
     },
 
     addItem: function () {
-    //Updates the currently stored wholedata with the newly inserted data. :)
+    //Updates the currently stored wholedata with the newly inserted data. :) - daniel
     this.tableData = [];
     this.wholeData = [];
     const url = "http://localhost:3000/read/staff";
@@ -81,6 +81,7 @@ export default {
       })
       .catch((e) => console.log(e));
     }
+
   },
 
   beforeMount() {

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const usertype='admin'; // DELETE afterwards
+const usertype='staff'; // DELETE afterwards
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -10,6 +10,8 @@ app.use(cors());
 
 //Controllers
 const user = require("./controllers/user");
+const room_service = require("./controllers/room_service");
+
 
 app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
@@ -40,7 +42,6 @@ app.get('/read/usertype',(req,res)=>{
 
 app.get('/read/staff', async (req, res)=>{
     let data = await user.readStaff();
-    // console.log(data);
     let response = [];
     for (let i=0 ; i<data.length ; i++){
         response.push({
@@ -131,34 +132,51 @@ app.get('/read/bookinginformation',(req,res)=>{
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.send(JSON.stringify(test));
+
+    
 });
 
-app.get('/read/roomorders',(req,res)=>{
+app.get('/read/roomorders', async (req,res) => {
 
-
-
-
-
-    let test = [
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 239", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "6 Nature's Spring bottle", "room" : "Room 512", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "5 Coca-cola, 2 Fried Chicken", "room" : "Room 311", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "1 Lechon Kawali, 1 Natures Spring bottle ", "room" : "Room 156", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "1 Nature's Spring bottle, 1 Fried Chicken", "room" : "Room 173", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 251", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 245", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 164", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "3 Grilled Butter Creamed Spinach Salmon", "room" : "Room 241", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 16", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 18", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 216", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 345", "status" : "Pending" },
-    ];
+    let data = await room_service.readOrders();
+    let response = [];
+    response = data;
+    // for (let i=0 ; i<data.length ; i++){
+    //     response.push({
+    //         "username" : data[i].first_name+' '+data[i].last_name,
+    //         "orders" : data[i].date_created.toDateString().slice(4),
+    //         "room" : data[i].date_created.toDateString().slice(4),
+    //         "status" : (data[i].time_serviced == null) ? 'PENDING' : 'FINISHED',
+    //     });
+    // }
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
-    res.send(JSON.stringify(test));
+    res.send(JSON.stringify(response));
+
+
+
+    // let test = [
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 239", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "6 Nature's Spring bottle", "room" : "Room 512", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "5 Coca-cola, 2 Fried Chicken", "room" : "Room 311", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "1 Lechon Kawali, 1 Natures Spring bottle ", "room" : "Room 156", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "1 Nature's Spring bottle, 1 Fried Chicken", "room" : "Room 173", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 251", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 245", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 164", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "3 Grilled Butter Creamed Spinach Salmon", "room" : "Room 241", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 16", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 18", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 216", "status" : "Pending" },
+    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 345", "status" : "Pending" },
+    // ];
+    // res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    // res.setHeader('Access-Control-Allow-Methods','GET');
+    // res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Credentials',true);
+    // res.send(JSON.stringify(test));
 });
 
 app.get('/read/roomcleaning', (req, res)=>{

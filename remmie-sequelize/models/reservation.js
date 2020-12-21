@@ -1,6 +1,6 @@
 const {DataTypes, DATE} = require("sequelize");
 const connection = require("../dbconnection");
-
+const user = require("./user");
 const reservation = connection.sequelize.define("reservations",{
   id: {
     type: DataTypes.BIGINT,
@@ -18,10 +18,10 @@ const reservation = connection.sequelize.define("reservations",{
   hotel_id: {
     type: DataTypes.BIGINT,
     allowNull: false,
-    references: {
-      model: hotel,
-      key: 'id',
-    },
+    // references: {
+    //   model: hotel,
+    //   key: 'id',
+    // },
   },
   room_type: {
     type: DataTypes.STRING,

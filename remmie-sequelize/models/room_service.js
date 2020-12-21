@@ -1,7 +1,9 @@
 const {DataTypes, DATE} = require("sequelize");
 const connection = require("../dbconnection");
+const user = require("./user");
+const reservation = require("./reservation");
 
-const room_service = connection.sequelize.define("room_services",{
+const room_service = connection.sequelize.define("room_services", {
   id: {
     type: DataTypes.BIGINT,
     primaryKey: true,

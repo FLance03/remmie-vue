@@ -12,7 +12,7 @@ export default {
     return {
       currentPage: 1,
       infoPerPage: 5,
-      tableHead: ['User Name', 'Orders', 'Room', 'Status', 'Actions'],
+      tableHead: ['Guest Name', 'Orders', 'Room', 'Status', 'Actions'],
       tableData: [],
       wholeData: [],
       pageNumbers: [],
