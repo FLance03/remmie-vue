@@ -10,7 +10,7 @@ app.use(cors());
 
 //Controllers
 const user = require("./controllers/user");
-const announcements = require("./controllers/announcement");
+const reservation = require("./controllers/reservation");
 
 app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
@@ -93,54 +93,79 @@ app.get('/read/staff',async (req,res)=>{
     // ];
 });
 
-app.get('/read/bookinginformation',(req,res)=>{
-    let test = [
-        {"userName":"VincentA","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentB","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentC","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentD","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentE","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentF","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentG","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentH","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentI","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentJ","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentK","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentL","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentM","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentN","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentO","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentP","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentQ","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentR","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentS","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentT","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentU","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentV","datebooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentW","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentX","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentY","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentZ","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentAA","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentBB","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentCC","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentDD","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentEE","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentFF","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentGG","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentHH","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentII","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentJJ","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
-        {"userName":"VincentKK","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
-        {"userName":"VincentLL","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
-        {"userName":"VincentMM","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
-        {"userName":"VincentNN","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
-    ];
+app.get('/read/bookinginformation',async (req,res)=>{
+    
+    let data = await reservation.readBookingInformation();
+    let response = [];
+    let userName;
+    let dateBooked;
+    let status;
+    let presentDate = new Date();
+
+    for (let i=0 ; i<data.length ; i++){
+        userName = data[i].user.first_name+' '+data[i].user.last_name;
+        dateBooked = data[i].date_checkin.toDateString().slice(4) + ' - ' + data[i].date_checkout.toDateString().slice(4);
+        if (data[i].date_checkout < presentDate){
+            status = 'Checked Out';
+        }else if (presentDate < data[i].date_checkin){
+            status = 'Incoming';
+        }else {
+            status = 'Checked In';
+        }
+        response.push({
+            "userName" : userName,
+            "dateBooked" : dateBooked,
+            "status" : status,
+        });
+    }
+
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
-    res.send(JSON.stringify(test));
+    res.send(JSON.stringify(response));
+    // let test = [
+    //     {"userName":"VincentA","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentB","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentC","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentD","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentE","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentF","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentG","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentH","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentI","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentJ","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentK","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentL","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentM","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentN","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentO","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentP","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentQ","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentR","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentS","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentT","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentU","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentV","datebooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentW","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentX","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentY","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentZ","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentAA","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentBB","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentCC","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentDD","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentEE","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentFF","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentGG","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentHH","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentII","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentJJ","dateBooked":"January 2, 2020 - February 4, 2020","status":"Incoming"},
+    //     {"userName":"VincentKK","dateBooked":"January 4, 2020 - February 5, 2020","status":"Checked In"},
+    //     {"userName":"VincentLL","dateBooked":"January 5, 2020 - February 8, 2020","status":"Checked In"},
+    //     {"userName":"VincentMM","dateBooked":"January 8, 2020 - February 9, 2020","status":"Checked Out"},
+    //     {"userName":"VincentNN","dateBooked":"January 9, 2020 - February 9, 2020","status":"Checked Out"},
+    // ];
 });
 
 app.get('/read/roomorders',(req,res)=>{
