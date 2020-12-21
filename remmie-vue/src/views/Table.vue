@@ -11,7 +11,7 @@ import axios from 'axios';
 import Vue from 'vue';
 import Admin from '../components/Admin.vue';
 import Staff from '../components/Staff.vue';
-import Login from '../components/Login.vue';
+import Login from '../views/Login.vue';
 
 export default {
   components: {
