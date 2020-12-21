@@ -1,45 +1,47 @@
-const {DataTypes, DATE} = require("sequelize");
-const connection = require("../dbconnection");
+module.exports = (sequelize,DataTypes) => {
+  const user = sequelize.define("user",{
+    id: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    first_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    date_created: {
+      type: DataTypes.DATE,
+    },
+    date_updated: {
+      type: DataTypes.DATE,
+    },
+    date_deleted: {
+      type: DataTypes.DATE,
+    },
+  },
+  {
+    tableName: 'users',
+    timestamps: true,
+    createdAt: 'date_created',
+    updatedAt: 'date_updated',
+    deletedAt: 'date_deleted',
+    paranoid: true,
+  });
+  return user;
+}
 
-const user = connection.sequelize.define("users",{
-  id: {
-    type: DataTypes.BIGINT,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  first_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  last_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  date_created: {
-    type: DataTypes.DATE,
-  },
-  date_updated: {
-    type: DataTypes.DATE,
-  },
-  date_deleted: {
-    type: DataTypes.DATE,
-  },
-},
-{
-  tableName: 'users',
-  createdAt: 'date_created',
-  updatedAt: 'date_updated',
-});
-
-exports.model = user;
 
 
 

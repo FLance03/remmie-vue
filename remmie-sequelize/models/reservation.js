@@ -1,71 +1,66 @@
-const {DataTypes, DATE} = require("sequelize");
-const connection = require("../dbconnection");
-
-const reservation = connection.sequelize.define("reservations",{
-  id: {
-    type: DataTypes.BIGINT,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  user_id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    references: {
-      model: user,
-      key: 'id',
+module.exports = (sequelize,DataTypes) => {
+  const reservation = sequelize.define("reservation",{
+    id: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    // user_id: {
+    //   type: DataTypes.BIGINT,
+    //   allowNull: false,
+    //   references: {
+    //     model: user,
+    //     key: 'id',
+    //   },
+    // },
+    room_type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    room_number: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    room_floor: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    price_per_room: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    payment_option: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    date_checkin: {
+      type: DataTypes.DATE,
+    },
+    date_checkout: {
+      type: DataTypes.DATE,
+    },
+    date_created: {
+      type: DataTypes.DATE,
+    },
+    date_updated: {
+      type: DataTypes.DATE,
+    },
+    date_deleted: {
+      type: DataTypes.DATE,
     },
   },
-  hotel_id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    references: {
-      model: hotel,
-      key: 'id',
-    },
-  },
-  room_type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  room_number: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  room_floor: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  price_per_room: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
-  },
-  payment_option: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  date_checkin: {
-    type: DataTypes.DATE,
-  },
-  date_checkout: {
-    type: DataTypes.DATE,
-  },
-  date_created: {
-    type: DataTypes.DATE,
-  },
-  date_updated: {
-    type: DataTypes.DATE,
-  },
-  date_deleted: {
-    type: DataTypes.DATE,
-  },
-},
-{
-  tableName: 'reservations',
-  createdAt: 'date_created',
-  updatedAt: 'date_updated',
-});
+  {
+    tableName: 'reservations',
+    timestamps: true,
+    createdAt: 'date_created',
+    updatedAt: 'date_updated',
+    deletedAt: 'date_deleted',
+    paranoid: true,
+  });
+  return reservation;
+}
 
-exports.model = reservation;
+
 
 
 
