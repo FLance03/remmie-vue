@@ -12,21 +12,27 @@ module.exports = {
         type: Sequelize.BIGINT
       },
       first_name: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       last_name: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       password: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       date_created: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       date_updated: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       date_deleted: {

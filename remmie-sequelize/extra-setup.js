@@ -45,6 +45,21 @@ function ExtraSetup(sequelize,DataTypes) {
 			allowNull: false,
 		},
 	});
+	
+	room_service.hasMany(line_item, {
+		foreignKey: {
+			name: 'room_service_id',
+			type: DataTypes.BIGINT,
+			allowNull: false,
+		},
+	});
+	line_item.belongsTo(room_service, {
+		foreignKey: {
+			name: 'room_service_id',
+			type: DataTypes.BIGINT,
+			allowNull: false,
+		},
+	});
 }
 
 module.exports = { ExtraSetup };

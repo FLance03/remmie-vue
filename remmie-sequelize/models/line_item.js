@@ -1,32 +1,17 @@
 module.exports = (sequelize,DataTypes) => {
-  const room_service = sequelize.define("room_service",{
+  const line_item = sequelize.define("line_item",{
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
       autoIncrement: true,
     },
-    // user_id: {
-    //   type: DataTypes.BIGINT,
-    //   allowNull: false,
-    //   references: {
-    //     model: user,
-    //     key: 'id',
-    //   },
-    // },
-    // reservation_id: {
-    //   type: DataTypes.BIGINT,
-    //   allowNull: false,
-    //   references: {
-    //     model: reservation,
-    //     key: 'id',
-    //   },
-    // },
-    service_type: {
-      type: DataTypes.BOOLEAN,
+    price: {
+      type: DataTypes.FLOAT,
       allowNull: false,
     },
-    time_serviced: {
-      type: DataTypes.DATE,
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     date_created: {
       type: DataTypes.DATE,
@@ -41,23 +26,22 @@ module.exports = (sequelize,DataTypes) => {
     },
   },
   {
-    tableName: 'room_services',
+    tableName: 'line_items',
     timestamps: true,
     createdAt: 'date_created',
     updatedAt: 'date_updated',
     deletedAt: 'date_deleted',
     paranoid: true,
   });
-  return room_service;
+  return line_item;
 }
-
 
 // 'use strict';
 // const {
 //   Model
 // } = require('sequelize');
 // module.exports = (sequelize, DataTypes) => {
-//   class room_service extends Model {
+//   class line_item extends Model {
 //     /**
 //      * Helper method for defining associations.
 //      * This method is not a part of Sequelize lifecycle.
@@ -67,18 +51,15 @@ module.exports = (sequelize,DataTypes) => {
 //       // define association here
 //     }
 //   };
-//   room_service.init({
+//   line_item.init({
 //     id: DataTypes.BIGINT,
-//     user_id: DataTypes.BIGINT,
-//     reservation_id: DataTypes.BIGINT,
-//     service_type: DataTypes.BOOLEAN,
-//     time_serviced: DataTypes.DATE,
-//     date_created: DataTypes.DATE,
-//     date_updated: DataTypes.DATE,
-//     date_deleted: DataTypes.DATE
+//     room_service_id: DataTypes.BIGINT,
+//     product_id: DataTypes.BIGINT,
+//     price: DataTypes.FLOAT,
+//     quantity: DataTypes.INTEGER
 //   }, {
 //     sequelize,
-//     modelName: 'room_service',
+//     modelName: 'line_item',
 //   });
-//   return room_service;
+//   return line_item;
 // };
