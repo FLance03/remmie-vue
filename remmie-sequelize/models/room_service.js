@@ -1,54 +1,54 @@
-const {DataTypes, DATE} = require("sequelize");
-const connection = require("../dbconnection");
-const user = require("./user");
-const reservation = require("./reservation");
-
-const room_service = connection.sequelize.define("room_services", {
-  id: {
-    type: DataTypes.BIGINT,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  user_id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    references: {
-      model: user,
-      key: 'id',
+module.exports = (sequelize,DataTypes) => {
+  const room_service = sequelize.define("room_service",{
+    id: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    // user_id: {
+    //   type: DataTypes.BIGINT,
+    //   allowNull: false,
+    //   references: {
+    //     model: user,
+    //     key: 'id',
+    //   },
+    // },
+    // reservation_id: {
+    //   type: DataTypes.BIGINT,
+    //   allowNull: false,
+    //   references: {
+    //     model: reservation,
+    //     key: 'id',
+    //   },
+    // },
+    service_type: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    time_serviced: {
+      type: DataTypes.DATE,
+    },
+    date_created: {
+      type: DataTypes.DATE,
+    },
+    date_updated: {
+      type: DataTypes.DATE,
+    },
+    date_deleted: {
+      type: DataTypes.DATE,
     },
   },
-  reservation_id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    references: {
-      model: reservation,
-      key: 'id',
-    },
-  },
-  service_type: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  time_serviced: {
-    type: DataTypes.DATE,
-  },
-  date_created: {
-    type: DataTypes.DATE,
-  },
-  date_updated: {
-    type: DataTypes.DATE,
-  },
-  date_deleted: {
-    type: DataTypes.DATE,
-  },
-},
-{
-  tableName: 'room_services',
-  createdAt: 'date_created',
-  updatedAt: 'date_updated',
-});
+  {
+    tableName: 'room_services',
+    timestamps: true,
+    createdAt: 'date_created',
+    updatedAt: 'date_updated',
+    deletedAt: 'date_deleted',
+    paranoid: true,
+  });
+  return room_service;
+}
 
-exports.model = room_service;
 
 // 'use strict';
 // const {

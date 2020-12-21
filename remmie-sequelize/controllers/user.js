@@ -1,15 +1,11 @@
-const { Op } = require("sequelize");
-const user = require("../models/user");
+const { user } = require("../models/index");
 
 exports.readStaff = async function readStaff(){
     let retVal = [];
-    await user.model.findAll({
+    await user.findAll({
         attributes: ['first_name','last_name','date_created'],
         where: {
             user_type: 'staff',
-            date_deleted: {
-                [Op.is]: null,
-            },
         },
     }).then(value => {
         retVal = value;

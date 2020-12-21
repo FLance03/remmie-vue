@@ -1,57 +1,51 @@
-const {DataTypes, DATE} = require("sequelize");
-const connection = require("../dbconnection");
-
-const announcement = connection.sequelize.define("announcements",{
-  id: {
-    type: DataTypes.BIGINT,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  hotel_id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    references: {
-      model: hotel,
-      key: 'id',
+module.exports = (sequelize,DataTypes) => {
+  const announcement = sequelize.define("announcement",{
+    id: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    start_time: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    end_time: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    date_created: {
+      type: DataTypes.DATE,
+    },
+    date_updated: {
+      type: DataTypes.DATE,
+    },
+    date_deleted: {
+      type: DataTypes.DATE,
     },
   },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  start_time: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  end_time: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  image: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  date_created: {
-    type: DataTypes.DATE,
-  },
-  date_updated: {
-    type: DataTypes.DATE,
-  },
-  date_deleted: {
-    type: DataTypes.DATE,
-  },
-},
-{
-  tableName: 'announcements',
-  createdAt: 'date_created',
-  updatedAt: 'date_updated',
-});
+  {
+    tableName: 'announcements',
+    timestamps: true,
+    createdAt: 'date_created',
+    updatedAt: 'date_updated',
+    deletedAt: 'date_deleted',
+    paranoid: true,
+  });
+  return announcement;
+}
 
-exports.model = announcement;
 
 
 

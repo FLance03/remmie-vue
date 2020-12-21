@@ -87,6 +87,7 @@ export default {
   beforeMount() {
     const url = "http://localhost:3000/read/staff";
     axios
+    // gets shit from the /read/
       .get(url)
       .then((response) => {
         var i, count;

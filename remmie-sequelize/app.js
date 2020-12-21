@@ -11,7 +11,7 @@ app.use(cors());
 //Controllers
 const user = require("./controllers/user");
 const room_service = require("./controllers/room_service");
-
+const announcements = require("./controllers/announcement");
 
 app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
@@ -19,8 +19,8 @@ app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.send(false);
-
 });
+
 app.post('/authenticate',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
@@ -40,7 +40,16 @@ app.get('/read/usertype',(req,res)=>{
     res.send(usertype);
 });
 
-app.get('/read/staff', async (req, res)=>{
+app.get('/read/announcements', async (req,res)=>{
+    let data = await announcements.readAnnouncements();
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods','GET');
+    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.send(JSON.stringify(data));
+});
+
+app.get('/read/staff',async (req,res)=>{
     let data = await user.readStaff();
     let response = [];
     for (let i=0 ; i<data.length ; i++){
@@ -180,7 +189,6 @@ app.get('/read/roomorders', async (req,res) => {
 });
 
 app.get('/read/roomcleaning', (req, res)=>{
-
     let test = [
         {"userName" : "Nick Clayton", "info" : "Toilet stuck", "room" : "Room 239", "status" : "Pending" },
         {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 234", "status" : "Pending" },
