@@ -7,14 +7,6 @@ const user = connection.sequelize.define("users",{
     primaryKey: true,
     autoIncrement: true,
   },
-  first_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  last_name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -23,6 +15,19 @@ const user = connection.sequelize.define("users",{
     type: DataTypes.STRING,
     allowNull: false,
   },
+  user_type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  first_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  last_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
   date_created: {
     type: DataTypes.DATE,
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <modal></modal>
+    <modal v-on:createStaff="addItem"></modal>
     <info-table
       v-on:changePage="changePage($event)"
       v-bind:pageNumbers="pageNumbers"
@@ -44,6 +44,7 @@ export default {
         this.updateInfo();
       }
     },
+
     updateInfo: function () {
       var i, count;
       this.pageNumbers = pagination(
@@ -61,10 +62,29 @@ export default {
         this.tableData[count].push(this.wholeData[i][1]);
       }
     },
+
+    addItem: function () {
+    //Updates the currently stored wholedata with the newly inserted data. :)
+    this.tableData = [];
+    this.wholeData = [];
+    const url = "http://localhost:3000/read/staff";
+    axios
+      .get(url)
+      .then((response) => {
+        var i, count;
+        for (count = 0, i = 0; i < response.data.length; i++, count++) {
+          this.wholeData.push([]);
+          this.wholeData[count].push(response.data[i]["staffName"]);
+          this.wholeData[count].push(response.data[i]["dateCreated"]);
+        }
+        this.updateInfo();
+      })
+      .catch((e) => console.log(e));
+    }
   },
+
   beforeMount() {
     const url = "http://localhost:3000/read/staff";
-
     axios
     // gets shit from the /read/
       .get(url)
@@ -81,7 +101,3 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>

@@ -73,8 +73,7 @@ export default {
     methods: {
         Authenticate: function() {
             const url = "http://localhost:3000/authenticate";
-            console.log('dasdfef');
-            console.log(this.username);
+            // console.log(this.username);
             axios({
                 method: 'POST',
                 url: url,
@@ -83,7 +82,7 @@ export default {
                     password: this.password,
                 }
             }).then( (response) => {
-                console.log(response.data)
+                // console.log(response.data)
                 if (response.data == true){
                     this.$router.replace({ name: 'Table'});
                 }

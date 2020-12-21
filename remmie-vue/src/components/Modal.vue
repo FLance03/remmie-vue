@@ -1,7 +1,7 @@
 
 <template>
   <div class="d-flex flex-row-reverse">
-    <div class="col-md-5">
+    <div class="col-md-5" v-on:click="toggleModal()">
       <div
         class="border-radius-button"
         data-toggle="modal"
@@ -42,7 +42,7 @@
                 <input
                   v-model="email"
                   required
-                  type="email"
+                  type="text"
                   placeholder="email address"
                 />
                 <input
@@ -57,20 +57,24 @@
                   type="password"
                   placeholder="confirm password"
                 />
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="btn btn-default btn-primary"
-              data-glyphicon="glyphicon-ok"
-              v-bind:data-dismiss="modalShow ? 'false' : 'modal'"
-              v-on:click="createStaff()"
-            >
-              Create
-            </button>
-          </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-default btn-primary"
+                    data-glyphicon="glyphicon-ok"
+                    v-bind:data-dismiss="modalShow ? 'false' : 'modal'"
+                    v-on:click="createStaff()"
+                  >
+                    Create
+                  </button>
+                </div>
               </form>
             </div>
           </div>
@@ -82,6 +86,8 @@
 
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -94,30 +100,46 @@ export default {
     };
   },
   methods: {
-    createStaff: function () {
-      console.log("Staff Account Created");
-      console.log(this.fname);
-      console.log(this.lname);
-      console.log(this.email);
-      console.log(this.pass);
-      console.log(this.cpass);
+    toggleModal: function () {
+      this.modalShow = true;
+    },
 
-      if (this.fname!='' && this.lname!='' && this.email!='' && this.pass!='' && this.cpass!='' && this.pass==this.cpass){
+    createStaff: function () {
+      if (
+        this.fname != "" &&
+        this.lname != "" &&
+        this.email != "" &&
+        this.pass != "" &&
+        this.cpass != "" &&
+        this.pass == this.cpass
+      ) {
+        //Update db data with this data
+        let body = {
+          email: this.email,
+          password: this.pass,
+          first_name: this.fname,
+          last_name: this.lname,
+        };
+
+        const url = "http://localhost:3000/write/staff";
+        axios
+          .post(url, body)
+          .then((res) => {
+            if (res.data) {
+              console.log("Staff Account Created");
+              this.fname = '';
+              this.lname = '';
+              this.email = '';
+              this.pass = '';
+              this.cpass = '';
+              this.$emit("createStaff");
+            } else {
+              console.log("Staff Creation Error.");
+            }
+          })
+          .catch((e) => console.log(e));
         this.modalShow = false;
       }
-      //Inserts inputted data into db - Daniel
-      // const url = "http://localhost:3000/write/createstaff";
-
-      // axios.get(url).then((response) => {
-      //   var i,count;
-      //   for (count=0,i=0 ; i<response.data.length ; i++,count++){
-      //     this.wholeData.push([]);
-      //     this.wholeData[count].push(response.data[i]['userName']);
-      //     this.wholeData[count].push(response.data[i]['dateBooked']);
-      //     this.wholeData[count].push(response.data[i]['status']);
-      //   }
-      //   this.updateInfo()
-      // }).catch( e => console.log(e));
     },
   },
 };
