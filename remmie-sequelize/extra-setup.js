@@ -1,5 +1,5 @@
 function ExtraSetup(sequelize,DataTypes) {
-	const { reservation, room_service, user } = sequelize.models;
+	const { reservation, room_service, user, line_item } = sequelize.models;
 
 	user.hasMany(reservation, {
 		foreignKey: {

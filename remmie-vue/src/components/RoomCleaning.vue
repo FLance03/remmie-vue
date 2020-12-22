@@ -1,6 +1,7 @@
 <template>
   <info-table
     v-on:changePage="changePage($event)"
+    v-on:confirm="updateStatus($event)"
     v-bind:pageNumbers="pageNumbers"
     v-bind:page="currentPage"
     v-bind:heads="tableHead"
@@ -21,12 +22,12 @@ export default {
       infoPerPage: 5,
       tableHead: [
         "Guest Name",
-        "Additional Information",
         "Room",
         "Status",
         "Actions",
       ],
       tableData: [],
+      id: [],
       wholeData: [],
       pageNumbers: [],
       service: true,
@@ -64,8 +65,44 @@ export default {
         this.tableData[count].push(this.wholeData[i][0]);
         this.tableData[count].push(this.wholeData[i][1]);
         this.tableData[count].push(this.wholeData[i][2]);
-        this.tableData[count].push(this.wholeData[i][3]);
       }
+    },
+
+    updateStatus: function (index) {
+      let body = {
+        id: this.id[index],
+      };
+      const url = "http://localhost:3000/update/roomorder_status";
+      axios
+        .post(url, body)
+        .then((res) => {
+          if (res.data) {
+            //Updates the currently stored wholedata with the newly inserted data. :) - daniel
+            console.log("Room Cleaning Status Updated");
+            this.tableData = [];
+            this.wholeData = [];
+            this.id = [];
+            const url = "http://localhost:3000/read/roomcleaning";
+            axios
+              .get(url)
+              .then((response) => {
+                var i, count;
+                for (count = 0, i = 0; i < response.data.length; i++, count++) {
+                  this.wholeData.push([]);
+                  this.wholeData[count].push(response.data[i]["username"]);
+                  this.wholeData[count].push(response.data[i]["room"]);
+                  this.wholeData[count].push(response.data[i]["status"]);
+                  this.id.push([]);
+                  this.id[count].push(response.data[i]["id"]);
+                }
+                this.updateInfo();
+              })
+              .catch((e) => console.log(e));
+          } else {
+            console.log("Status Update Error.");
+          }
+        })
+        .catch((e) => console.log(e));
     },
   },
 
@@ -77,10 +114,11 @@ export default {
         var i, count;
         for (count = 0, i = 0; i < response.data.length; i++, count++) {
           this.wholeData.push([]);
-          this.wholeData[count].push(response.data[i]["userName"]);
-          this.wholeData[count].push(response.data[i]["info"]);
+          this.wholeData[count].push(response.data[i]["username"]);
           this.wholeData[count].push(response.data[i]["room"]);
           this.wholeData[count].push(response.data[i]["status"]);
+          this.id.push([]);
+          this.id[count].push(response.data[i]["id"]);
         }
         this.updateInfo();
       })

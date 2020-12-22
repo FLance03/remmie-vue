@@ -5,33 +5,20 @@ module.exports = (sequelize,DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    price: {
-      type: DataTypes.FLOAT,
+    product_id: {
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    date_created: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    date_updated: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    date_deleted: {
-      type: DataTypes.DATE,
-    },
   },
   {
     tableName: 'line_items',
-    timestamps: true,
-    createdAt: 'date_created',
-    updatedAt: 'date_updated',
-    deletedAt: 'date_deleted',
-    paranoid: true,
+    createdAt: false,
+    updatedAt: false,
+    deletedAt: false,
   });
   return line_item;
 }

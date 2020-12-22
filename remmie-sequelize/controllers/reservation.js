@@ -2,7 +2,7 @@ const { user, reservation } = require("../models/index");
 
 exports.readBookingInformation = async function readBookingInformation() {
     let retVal = [];
-    let query = await reservation.findAll({
+    await reservation.findAll({
         attributes: ['date_checkin','date_checkout'],
         include: [{
             model: user,

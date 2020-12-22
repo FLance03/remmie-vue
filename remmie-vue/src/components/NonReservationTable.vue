@@ -13,14 +13,12 @@
           <td v-for="(info, index) in record" v-bind:key="index">{{ info }}</td>
           <td v-if="service == true" class="table-data-padding-top">
             <div class="border-rounded-button-container" >
-              <div  class="border-rounded-button" v-on:click="confirm(record)">
+              <div v-if="record[2]=='PENDING' || record[3]=='PENDING'" class="border-rounded-button" v-on:click="confirm(index)">
                 <a href="#">Confirm</a>
               </div>
-              <!-- v-if="usertype =='staff'" -->
-              <div  class="border-rounded-button" v-on:click="confirm(record)">
-                <a href="#">Confirm</a>
+              <div v-else class="border-rounded-button-confirmed" >
+                <button disabled href="#">Confirmed</button>
               </div>
-              <!-- v-else-if="usertype =='staff'" -->
             </div>
           </td>
         </tr>
@@ -53,7 +51,7 @@ export default {
       this.$emit("changePage", page);
     },
     confirm: function (id) {
-      console.log(id);
+      this.$emit("confirm", id);
     },
   },
 };

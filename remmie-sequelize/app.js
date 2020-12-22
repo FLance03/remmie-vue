@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const usertype='staff'; // DELETE afterwards
+const usertype = 'staff'; // DELETE afterwards
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
@@ -14,55 +14,55 @@ const room_service = require("./controllers/room_service");
 const announcements = require("./controllers/announcement");
 const reservation = require("./controllers/reservation");
 
-app.get('/isloggedin',(req,res)=>{
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
+app.get('/isloggedin', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(false);
 });
 
-app.post('/authenticate',(req,res)=>{
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
+app.post('/authenticate', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(true);
 
 });
 
 
 //READING QUERIES-----------------------------------------------------------------------
-app.get('/read/usertype',(req,res)=>{
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
+app.get('/read/usertype', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(usertype);
 });
 
-app.get('/read/announcements', async (req,res)=>{
+app.get('/read/announcements', async (req, res) => {
     let data = await announcements.readAnnouncements();
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(JSON.stringify(data));
 });
 
-app.get('/read/staff',async (req,res)=>{
+app.get('/read/staff', async (req, res) => {
     let data = await user.readStaff();
     let response = [];
-    for (let i=0 ; i<data.length ; i++){
+    for (let i = 0; i < data.length; i++) {
         response.push({
-            "staffName" : data[i].first_name+' '+data[i].last_name,
-            "dateCreated" : data[i].date_created.toDateString().slice(4),
+            "staffName": data[i].first_name + ' ' + data[i].last_name,
+            "dateCreated": data[i].date_created.toDateString().slice(4),
         });
     }
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(JSON.stringify(response));
     // let test = [
     //     {"staffName":"VincentA","dateCreated":"January 2, 2020"},
@@ -94,8 +94,8 @@ app.get('/read/staff',async (req,res)=>{
     // ];
 });
 
-app.get('/read/bookinginformation',async (req,res)=>{
-    
+app.get('/read/bookinginformation', async (req, res) => {
+
     let data = await reservation.readBookingInformation();
     let response = [];
     let userName;
@@ -103,108 +103,116 @@ app.get('/read/bookinginformation',async (req,res)=>{
     let status;
     let presentDate = new Date();
 
-    for (let i=0 ; i<data.length ; i++){
-        userName = data[i].user.first_name+' '+data[i].user.last_name;
+    for (let i = 0; i < data.length; i++) {
+        userName = data[i].user.first_name + ' ' + data[i].user.last_name;
         dateBooked = data[i].date_checkin.toDateString().slice(4) + ' - ' + data[i].date_checkout.toDateString().slice(4);
-        if (data[i].date_checkout < presentDate){
+        if (data[i].date_checkout < presentDate) {
             status = 'Checked Out';
-        }else if (presentDate < data[i].date_checkin){
+        } else if (presentDate < data[i].date_checkin) {
             status = 'Incoming';
-        }else {
+        } else {
             status = 'Checked In';
         }
         response.push({
-            "userName" : userName,
-            "dateBooked" : dateBooked,
-            "status" : status,
+            "userName": userName,
+            "dateBooked": dateBooked,
+            "status": status,
         });
     }
 
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
-    res.send(JSON.stringify(test));
-
-    
-});
-
-app.get('/read/roomorders', async (req,res) => {
-
-    let data = await room_service.readOrders();
-    let response = [];
-    response = data;
-    // for (let i=0 ; i<data.length ; i++){
-    //     response.push({
-    //         "username" : data[i].first_name+' '+data[i].last_name,
-    //         "orders" : data[i].date_created.toDateString().slice(4),
-    //         "room" : data[i].date_created.toDateString().slice(4),
-    //         "status" : (data[i].time_serviced == null) ? 'PENDING' : 'FINISHED',
-    //     });
-    // }
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
-    res.send(JSON.stringify(response));
-
-
-
-    // let test = [
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 239", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "6 Nature's Spring bottle", "room" : "Room 512", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "5 Coca-cola, 2 Fried Chicken", "room" : "Room 311", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "1 Lechon Kawali, 1 Natures Spring bottle ", "room" : "Room 156", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "1 Nature's Spring bottle, 1 Fried Chicken", "room" : "Room 173", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 251", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 245", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 164", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "3 Grilled Butter Creamed Spinach Salmon", "room" : "Room 241", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 16", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 18", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 216", "status" : "Pending" },
-    //     {"userName" : "Nick Clayton", "orders" : "2 Grilled Burger, 1 Garlic Fries", "room" : "Room 345", "status" : "Pending" },
-    // ];
-    // res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    // res.setHeader('Access-Control-Allow-Methods','GET');
-    // res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    // res.setHeader('Access-Control-Allow-Credentials',true);
-    // res.send(JSON.stringify(test));
-});
-
-app.get('/read/roomcleaning', (req, res)=>{
-    let test = [
-        {"userName" : "Nick Clayton", "info" : "Toilet stuck", "room" : "Room 239", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 234", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 42", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "Towels", "room" : "Room 52", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 123", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 239", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "Towels", "room" : "Room 239", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 453", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 239", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 74", "status" : "Pending" },
-        {"userName" : "Nick Clayton", "info" : "None", "room" : "Room 356", "status" : "Pending" },
-       
-    ];
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(JSON.stringify(test));
+    res.send(JSON.stringify(response));
+});
+
+app.get('/read/roomorders', async (req, res) => {
+
+    //Hi sir, this is from our other assumed hotel database smiley face :)
+    let orders = [
+        { id: 1, prodName: 'Burger King Deluxe Omega', price: 50.0, desc: 'Awesomeness in mouth' },
+        { id: 2, prodName: 'Shanghai Lumpia', price: 225.0, desc: 'Awesomeness in mouth' },
+        { id: 3, prodName: 'Mixed Seafood Chowder', price: 195.0, desc: 'Awesomeness in mouth' },
+        { id: 4, prodName: 'Baked Scallop', price: 285.0, desc: 'Awesomeness in mouth' },
+        { id: 5, prodName: 'Cream of Mushroom Soup', price: 150.0, desc: 'Awesomeness in mouth' },
+        { id: 6, prodName: 'Pork Baby Backribs', price: 450.0, desc: 'Awesomeness in mouth' },
+    ];
+
+    let data = await room_service.readOrders();
+    let response = [];
+
+    let username;
+    let room;
+    let order;
+    let status;
+
+    for (let i = 0; i < data.length; i++) {
+        username = data[i].user.first_name + ' ' + data[i].user.last_name;
+        order = data[i].line_items[0].quantity + ' ' + orders[data[i].line_items[0].product_id].prodName;
+        room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;
+        status = (data[i].time_serviced == null) ? 'PENDING' : 'FINISHED',
+        response.push({
+            "username": username,
+            "orders": order,
+            "room": room,
+            "status": status,
+            "id": data[i].id
+        });
+    }
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.send(JSON.stringify(response));
+});
+
+app.get('/read/roomcleaning', async (req, res) => {
+    let data = await room_service.readCleaning();
+    let response = [];
+    let username;
+    let room;
+    let status;
+    for (let i = 0; i < data.length; i++) {
+        username = data[i].user.first_name + ' ' + data[i].user.last_name;
+        room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;
+        status = (data[i].time_serviced == null) ? 'PENDING' : 'FINISHED',
+        response.push({
+            "username": username,
+            "room": room,
+            "status": status,
+            "id": data[i].id
+        });
+    }
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.send(JSON.stringify(response));
 });
 
 //WRITING QUERIES-----------------------------------------------------------------------
-app.post('/write/staff', async (req, res)=>{
+app.post('/write/staff', async (req, res) => {
     let bool = await user.createStaff(req.body);
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(JSON.stringify(bool));
 });
 
-app.listen('3000',(err)=>{
+//UPDATING QUERIES-----------------------------------------------------------------------
+app.post('/update/roomorder_status', async (req, res) => {
+    let bool = await room_service.updateStatus(req.body);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.send(JSON.stringify(bool));
+});
+
+app.listen('3000', (err) => {
     if (err) throw err;
     console.log("Listening in Port 3000");
 })

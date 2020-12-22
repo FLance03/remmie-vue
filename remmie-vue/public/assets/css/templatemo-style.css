@@ -848,6 +848,26 @@ section.buttons .container-fluid {
     background-color: rgba(83,91,160,1);
 }
 
+.border-rounded-button-confirmed {
+    margin-bottom: 30px;
+}
+.border-rounded-button-confirmed button {
+    font-size: 14px;
+    font-weight: 100px;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 8px;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0.5px;
+    color: #fff;
+    border: 2px solid #535ba0;
+    transition: all 0.5s;
+    background-color: rgba(83,91,160,1);
+    border-radius: 20px;
+}
+
+
 .filled-icon-button {
     margin-bottom: 30px;
 }
