@@ -11,6 +11,8 @@ app.use(cors());
 //Controllers
 const user = require("./controllers/user");
 const reservation = require("./controllers/reservation");
+const line_items = require("./controllers/line_item");
+const announcements = require("./controllers/announcement");
 
 app.get('/isloggedin',(req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
@@ -37,6 +39,15 @@ app.get('/read/usertype',(req,res)=>{
     res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials',true);
     res.send(usertype);
+});
+
+app.get('/read/lineitems', async (req,res)=>{
+    let data = await line_items.readLineitems();
+    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods','GET');
+    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.send(JSON.stringify(data));
 });
 
 app.get('/read/announcements', async (req,res)=>{

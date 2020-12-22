@@ -6,6 +6,7 @@
 
 <script>
 
+
 export default {
    mounted() {
       let jquery = document.createElement('script')
@@ -88,9 +89,11 @@ export default {
       custom.defer  = true
       custom.setAttribute('src', 'assets/js/custom.js')
       document.head.appendChild(custom)
+      let chartloader = document.createElement('script')
+      chartloader.async = false
+      chartloader.defer  = true
+      chartloader.setAttribute('src', 'https://www.gstatic.com/charts/loader.js')
+      document.head.appendChild(chartloader)
     },
 };
 </script>
-
-<style>
-</style>
