@@ -26,7 +26,7 @@
           </div>
           <div class="modal-body">
             <div class="form">
-              <form class="">
+              <form class="" v-on:submit.prevent>
                 <input
                   v-model="fname"
                   required

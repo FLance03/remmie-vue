@@ -9,6 +9,7 @@ exports.readBookingInformation = async function readBookingInformation() {
             attributes: ['first_name','last_name'],
             required: true,
         }],
+        order: [['date_checkin', 'DESC']]
     }).then(value => {
         retVal = value;
     }).catch(e => {
