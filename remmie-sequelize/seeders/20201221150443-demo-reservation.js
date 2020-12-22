@@ -41,7 +41,7 @@ module.exports = {
           date_checkout: dateCheckOut,
           date_created: date,
           date_updated: date,
-          date_deleted: i%5==0 ? date : null,
+          date_deleted: i%3==0 ? date : null,
         }
       );
     }
