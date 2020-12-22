@@ -17,7 +17,7 @@ exports.readStaff = async function readStaff(){
 
 exports.createStaff = async function createStaff(body){
     let bool = true;
-    await user.model.create({
+    await user.create({
         email: body.email, password: body.password, user_type: 'staff', first_name: body.first_name, last_name: body.last_name,
     }).catch(e => {
         bool = false;

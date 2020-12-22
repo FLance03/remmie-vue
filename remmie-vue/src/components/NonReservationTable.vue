@@ -11,10 +11,13 @@
       <tbody>
         <tr v-for="(record, index) in infos" v-bind:key="index">
           <td v-for="(info, index) in record" v-bind:key="index">{{ info }}</td>
-          <td v-if="service == true">
-            <div class="border-rounded-button-container">
-              <div class="border-rounded-button" v-on:click="confirm(record)">
+          <td v-if="service == true" class="table-data-padding-top">
+            <div class="border-rounded-button-container" >
+              <div v-if="record[2]=='PENDING' || record[3]=='PENDING'" class="border-rounded-button" v-on:click="confirm(index)">
                 <a href="#">Confirm</a>
+              </div>
+              <div v-else class="border-rounded-button-confirmed" >
+                <button disabled href="#">Confirmed</button>
               </div>
             </div>
           </td>
@@ -48,12 +51,15 @@ export default {
       this.$emit("changePage", page);
     },
     confirm: function (id) {
-      console.log(id);
+      this.$emit("confirm", id);
     },
   },
 };
 </script>
 
 
-<style>
+<style scoped>
+  .table-data-padding-top {
+    padding-top: 50px;
+  }
 </style>

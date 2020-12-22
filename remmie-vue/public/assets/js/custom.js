@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
 
 	$('.owl-carousel').owlCarousel({
 	    items:4,
