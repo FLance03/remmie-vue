@@ -17,7 +17,7 @@ exports.readOrders = async function readOrders(){
     //     status: '',
     // }
     
-    await room_service.model.findAll({
+    await room_service.findAll({
         attributes: ['user_id', 'reservation_id', 'service_type', 'time_serviced'],
     }).then(value => {
         //For every record in room_services table, append user and reservation details
