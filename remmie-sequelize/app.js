@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const usertype = 'staff'; // DELETE afterwards
+const usertype = 'admin'; // DELETE afterwards
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -210,6 +210,16 @@ app.post('/write/staff', async (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(JSON.stringify(bool));
+});
+
+app.post('/write/announcement', async (req, res) => {
+        let bool = await announcements.createAnnouncements(req.body);
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        res.send(JSON.stringify(bool));
+        console.log(e);
 });
 
 //UPDATING QUERIES-----------------------------------------------------------------------

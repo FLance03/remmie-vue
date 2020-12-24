@@ -34,6 +34,24 @@ export default {
   },
   computed: {},
   methods: {
+    addItem: function () {
+    //Updates the currently stored wholedata with the newly inserted data. :) - daniel
+    this.tableData = [];
+    this.wholeData = [];
+    const url = "http://localhost:3000/read/staff";
+    axios
+      .get(url)
+      .then((response) => {
+        var i, count;
+        for (count = 0, i = 0; i < response.data.length; i++, count++) {
+          this.wholeData.push([]);
+          this.wholeData[count].push(response.data[i]["staffName"]);
+          this.wholeData[count].push(response.data[i]["dateCreated"]);
+        }
+        this.updateInfo();
+      })
+      .catch((e) => console.log(e));
+    },
     changePage: function (page) {
       if (
         page >= 1 &&
@@ -63,24 +81,7 @@ export default {
       }
     },
 
-    addItem: function () {
-    //Updates the currently stored wholedata with the newly inserted data. :) - daniel
-    this.tableData = [];
-    this.wholeData = [];
-    const url = "http://localhost:3000/read/staff";
-    axios
-      .get(url)
-      .then((response) => {
-        var i, count;
-        for (count = 0, i = 0; i < response.data.length; i++, count++) {
-          this.wholeData.push([]);
-          this.wholeData[count].push(response.data[i]["staffName"]);
-          this.wholeData[count].push(response.data[i]["dateCreated"]);
-        }
-        this.updateInfo();
-      })
-      .catch((e) => console.log(e));
-    }
+
 
   },
 

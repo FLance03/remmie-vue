@@ -78,11 +78,9 @@ export default {
             this.total[date.getMonth()] += data["price"]*data["quantity"];
           }
         }
-        console.log(this.total);
         this.pushArray(this.chartData, ['October', this.total[9]]);
         this.pushArray(this.chartData, ['November', this.total[10]]);
         this.pushArray(this.chartData, ['December', this.total[11]]);
-        console.log(this.chartData);
       })
       .catch((e) => console.log(e));
   },

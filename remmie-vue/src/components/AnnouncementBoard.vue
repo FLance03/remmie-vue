@@ -1,4 +1,6 @@
 <template>
+<div>
+  <modal v-on:createAnnouncement="addItem"></modal>
   <div id="container-fluid">
     <div id="row">
       <div id="col-md-12" v-for="(data, index) in wholeData" v-bind:key="index">
@@ -8,7 +10,7 @@
             <div class="col" id="ann-text">
               <p>{{data.description}}</p>
               <p>Start Time: {{formatdate(data.start_time)}}</p>
-              <p>Start Time: {{formatdate(data.end_time)}}</p>
+              <p>End Time: {{formatdate(data.end_time)}}</p>
             </div>
             <div class="col">
               <img :src="getImage(data.image)">
@@ -18,10 +20,12 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import axios from "axios";
+import modal from "./ModalAnn";
 
 export default {
   data() {
@@ -29,8 +33,24 @@ export default {
       wholeData: [],
     };
   },
+  components: {
+    "modal": modal, 
+  },
   computed: {},
   methods: {
+    addItem: function () {
+    this.wholeData = [];
+    const url = "http://localhost:3000/read/announcements";
+    axios
+      .get(url)
+      .then((response) => {
+        var i;
+        for (i = 0; i < response.data.length; i++) {
+          this.wholeData.push(response.data[i]);
+        }
+      })
+      .catch((e) => console.log(e));
+    },
     getImage(imagepath){
       return "assets/images/"+imagepath;
     },
@@ -45,7 +65,6 @@ export default {
       .then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           this.wholeData.push(response.data[i]);
-          console.log(this.wholeData[i]["image"]);
         }
       })
       .catch((e) => console.log(e));
