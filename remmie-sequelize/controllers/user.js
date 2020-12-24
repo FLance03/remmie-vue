@@ -25,3 +25,20 @@ exports.createStaff = async function createStaff(body){
     });
     return bool;
 }
+
+exports.authenticate = async function authenticate(email, password) {
+    let authenticate = false;
+
+    return await user.findOne({
+        attributes: ['user_type'],
+        where: {
+            email: email,
+            password: password,
+        }
+    }).then(value => {
+        return value==null ? {authenticate:false, type: null} : {authenticate:true, type: value};
+    }).catch(e => {
+        bool = false;
+        throw e;
+    });
+}

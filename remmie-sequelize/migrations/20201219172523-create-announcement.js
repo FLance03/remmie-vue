@@ -6,10 +6,6 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      id: {
-        allowNull: false,
         type: Sequelize.BIGINT
       },
       hotel_id: {

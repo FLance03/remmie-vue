@@ -4,11 +4,11 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.addColumn(
       'users',
-      'user_type',
+      'hotel_id',
       {
-        type: Sequelize.STRING,
-        allowNull: false,
-        after: 'last_name',
+        type: Sequelize.BIGINT,
+        allowNull: true,
+        after: 'id',
       }
     );
     /**
@@ -22,7 +22,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     return queryInterface.removeColumn(
       'users',
-      'user_type',
+      'hotel_id',
     );
     /**
      * Add reverting commands here.

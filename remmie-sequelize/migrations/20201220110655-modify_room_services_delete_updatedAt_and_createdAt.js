@@ -30,12 +30,18 @@ module.exports = {
         queryInterface.addColumn(
           'room_services',
           'createdAt',
-          { transaction : t }
+          {
+            type: Sequelize.DataTypes.DATE,
+            allowNull: false,
+          },{ transaction : t }
         ),
         queryInterface.addColumn(
           'room_services',
           'updatedAt',
-          { transaction : t }
+          {
+            type: Sequelize.DataTypes.DATE,
+            allowNull: false,
+          },{ transaction : t }
         )
       ]);
     });
