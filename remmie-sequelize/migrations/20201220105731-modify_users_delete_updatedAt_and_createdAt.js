@@ -30,12 +30,18 @@ module.exports = {
         queryInterface.addColumn(
           'users',
           'createdAt',
-          { transaction : t }
+          {
+            type: Sequelize.DataTypes.DATE,
+            allowNull: false,
+          },{ transaction : t }
         ),
         queryInterface.addColumn(
           'users',
           'updatedAt',
-          { transaction : t }
+          {
+            type: Sequelize.DataTypes.DATE,
+            allowNull: false,
+          },{ transaction : t }
         )
       ]);
     });
