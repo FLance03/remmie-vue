@@ -1,5 +1,7 @@
 const {Sequelize} = require("sequelize");
-const sequelize = new Sequelize("remmie","root","",{
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/./config/config.json')[env];
+const sequelize = new Sequelize(config.database, config.username, config.password, {
     host: "localhost",
     dialect: "mysql",
     pool: {
@@ -9,10 +11,11 @@ const sequelize = new Sequelize("remmie","root","",{
         idle: 10000,
     },
 });
+
 try {
     sequelize.authenticate();
 }catch(e) {
     console.log(e);
 }
 
-exports.sequelize = sequelize;
+module.exports = {sequelize, Sequelize};

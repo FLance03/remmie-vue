@@ -14,7 +14,6 @@ const room_service = require("./controllers/room_service");
 const announcements = require("./controllers/announcement");
 const reservation = require("./controllers/reservation");
 const line_items = require("./controllers/line_item");
-const announcements = require("./controllers/announcement");
 
 app.get('/isloggedin', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');

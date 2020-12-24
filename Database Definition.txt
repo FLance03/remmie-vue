@@ -12,12 +12,25 @@ CREATE TABLE remmie.notifications(id BIGINT PRIMARY KEY AUTO_INCREMENT, user_id 
 CREATE TABLE remmie.preview_images(id BIGINT PRIMARY KEY AUTO_INCREMENT, hotel_id BIGINT, image VARCHAR(255), date_created DATETIME DEFAULT CURRENT_TIMESTAMP, date_updated DATETIME ON UPDATE CURRENT_TIMESTAMP, date_deleted DATETIME DEFAULT NULL, FOREIGN KEY(hotel_id) REFERENCES remmie.hotels(id));
 
 
+
 INSERT INTO remmie.establishments(company_name,is_partnered,contact_information) VALUES('EST',1,'CONT1');
 INSERT INTO remmie.establishments(company_name,is_partnered,contact_information) VALUES('EST2',0,'CONT2');
 INSERT INTO remmie.hotels(establishment_id,name,star,rating,country,province,city,street,description,image,contact_information) VALUES(1,'HOT1',2,1,'Philippines','Cebu','Cebu City','STR1','DESC1DESC1DESC1DESC1DESC1DESC1DESC1DESC1DESC1DESC1DESC1DESC1','assets/hotel1.jpg','09431234567');
 INSERT INTO remmie.hotels(establishment_id,name,star,rating,country,province,city,street,description,image,contact_information) VALUES(2,'HOT2',3,2,'Philippines','Manila','Manila City','STR2','DESC2DESC2DESC2DESC2DESC2DESC2DESC2DESC2','assets/hotel1.jpg','09431234567');
 INSERT INTO remmie.hotels(establishment_id,name,star,rating,country,province,city,street,description,image,contact_information) VALUES(1,'HOT3',4,3,'Philippines','Negros','Negros City','STR3','DESC3DESC3DESC3DESC3DESC3DESC3DESC3DESC3DESC3','assets/hotel2.jpg','09431234567');
 INSERT INTO remmie.hotels(establishment_id,name,star,rating,country,province,city,street,description,image,contact_information) VALUES(2,'HOT4',5,4,'Philippines','Palawan','Palawan City','STR4','DESC4DESC4DESC4DESC4DESC4DESC4DESC4DESC4DESC4','assets/hotel2.jpg','09431234567');
+
+INSERT INTO remmie.preview_images(hotel_id,image) VALUES(1,'room2.jpg');
+INSERT INTO remmie.preview_images(hotel_id,image) VALUES(1,'room4.jpg');
+INSERT INTO remmie.preview_images(hotel_id,image) VALUES(1,'service2.jpg');
+INSERT INTO remmie.preview_images(hotel_id,image) VALUES(3,'room3.jpg');
+INSERT INTO remmie.preview_images(hotel_id,image) VALUES(3,'fireworks.jpg');
+
+
+
+
+
+
 
 
 
