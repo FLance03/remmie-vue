@@ -39,6 +39,7 @@ export default {
   computed: {},
   methods: {
     addItem: function () {
+      console.log('aaaaaaaaaaaaaaaaaaa');
     this.wholeData = [];
     const url = "http://localhost:3000/read/announcements";
     axios

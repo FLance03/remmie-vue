@@ -3,8 +3,9 @@ const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: true});
 const cors = require('cors');
 const session = require('express-session');
+const formidable = require('formidable');
+const fs = require('fs');
 const app = express();
-const usertype = 'admin'; // DELETE afterwards
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -45,12 +46,28 @@ function checkAdmin(req, res, next) {
     }
 }
 
+app.post('/upload/announcementimage',(req,res)=>{
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        var oldpath = files.announcementimage.path;
+        var newpath = `${__dirname}/../remmie-vue/public/assets/images/` + files.announcementimage.name;
+        console.log(newpath);
+        fs.rename(oldpath, newpath, function (err) {
+          if (err) throw err;
+          res.send('File uploaded and moved!');
+        });
+    });
+    // const file = `${__dirname}/upload-folder/dramaticpenguin.MOV`;
+    // res.download(file); // Set disposition and send it.
+});
 app.get('/isloggedin', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(false);
+    console.log(sess.usertype!=undefined )
+    console.log((sess.user_type=='staff' || sess.usertype=='admin'))
+    res.send(sess.user_type!=undefined && (sess.user_type=='staff' || sess.user_type=='admin'));
 });
 
 app.post('/authenticate',urlencodedParser, async (req, res) => {
@@ -82,8 +99,8 @@ app.get('/read/usertype', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    console.log(usertype);
-    res.send(usertype);
+    
+    res.send(sess.user_type);
 });
 
 app.get('/read/lineitems',  checkAdmin, async (req,res)=>{
@@ -245,7 +262,6 @@ app.post('/write/announcement',  checkAdmin, async (req, res) => {
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         res.setHeader('Access-Control-Allow-Credentials', true);
         res.send(JSON.stringify(bool));
-        console.log(e);
 });
 
 //UPDATING QUERIES-----------------------------------------------------------------------
