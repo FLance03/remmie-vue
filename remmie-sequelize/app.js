@@ -50,7 +50,7 @@ app.get('/isloggedin', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(true);
+    res.send(false);
 });
 
 app.post('/authenticate',urlencodedParser, async (req, res) => {
@@ -59,6 +59,7 @@ app.post('/authenticate',urlencodedParser, async (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     let data = false;
+    console.log(req.body)
     if (req.body.email!=undefined && req.body.password!=undefined){
         let {authenticate, type} = await user.authenticate(req.body.email,req.body.password);
         

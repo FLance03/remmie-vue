@@ -32,6 +32,22 @@ module.exports = {
         }
       );
     }
+    let date = new Date();
+    let salt = bcrypt.genSaltSync(saltRounds);
+    let password = bcrypt.hashSync('admin',salt);
+    demoUsers.push(
+      {
+        first_name: 'admin',
+        last_name: 'admin',
+        user_type: 'admin',
+        email: 'admin@gmail.com',
+        password: password,
+        date_created: date,
+        date_updated: date,
+        date_deleted: null,
+      }
+    );
+
     return queryInterface.bulkInsert('Users',demoUsers);
     /**
      * Add seed commands here.

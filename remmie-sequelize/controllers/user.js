@@ -36,7 +36,7 @@ exports.authenticate = async function authenticate(email, password) {
 
     return await user.findOne({
         raw: true,
-        attributes: ['user_type'],
+        attributes: ['user_type','password'],
         where: {
             email: email,
         }
