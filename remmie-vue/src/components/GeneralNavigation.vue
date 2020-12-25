@@ -40,10 +40,9 @@
             <p>{{type}} NAVIGATION</p>
           </div>
           <ul>
-            <li v-for="(page,index) in pages" v-bind:key="index" v-on:click="NavClick(index)">
+            <li v-for="(page, index) in pages" v-bind:key="index" v-on:click="NavClick(index)">
               <div class="row">
-                <!-- <p>this is an icon</p> -->
-                <a> <i class="lnr lnr-poop"></i> {{page}}</a>
+                <a style="padding-left: 20px"> <i v-bind:class="icons[index]"></i> {{page}}</a>
               </div>
             </li>
           </ul>
@@ -65,7 +64,7 @@
 import axios from 'axios';
 
 export default {
-    props: ["pages","type"],
+    props: ["pages","type", "icons"],
     components: {
     },
     data() {
