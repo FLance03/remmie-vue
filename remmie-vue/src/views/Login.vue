@@ -39,10 +39,10 @@
                 Your personal remote hotel butler
               </span>
               <span class="txt1 p-b-2">
-                Username
+                Email
               </span>
-              <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
-                <input class="input100" type="text" name="username" >
+              <div class="wrap-input100 validate-input m-b-36" data-validate = "Email is required">
+                <input class="input100" type="email" name="email" v-model="email">
                 <span class="focus-input100"></span>
               </div>
               
@@ -50,7 +50,7 @@
                 Password
               </span>
               <div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
-                <input class="input100" type="password" name="pass" >
+                <input class="input100" type="password" name="pass" v-model="password">
                 <span class="focus-input100"></span>
               </div>
               
@@ -105,19 +105,18 @@ import axios from 'axios';
 export default {
     data(){
         return {
-            username: '',
+            email: '',
             password: '',
         };
     },
     methods: {
         Authenticate: function() {
             const url = "http://localhost:3000/authenticate";
-            // console.log(this.username);
             axios({
                 method: 'POST',
                 url: url,
                 data: {
-                    username: this.username,
+                    email: this.email,
                     password: this.password,
                 }
             }).then( (response) => {
