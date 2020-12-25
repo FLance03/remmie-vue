@@ -82,8 +82,8 @@ app.get('/read/usertype', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    console.log(usertype);
-    res.send(usertype);
+    // console.log(usertype);
+    res.send(sess.user_type);
 });
 
 app.get('/read/lineitems',  checkAdmin, async (req,res)=>{

@@ -9,8 +9,8 @@
           <div class="row">
             <div class="col" id="ann-text">
               <p>{{data.description}}</p>
-              <p>Start Time: {{formatdate(data.start_time)}}</p>
-              <p>End Time: {{formatdate(data.end_time)}}</p>
+              <p>Start Time: {{format_date(data.start_time)}}</p>
+              <p>End Time: {{format_date(data.end_time)}}</p>
             </div>
             <div class="col">
               <img :src="getImage(data.image)">
@@ -26,6 +26,7 @@
 <script>
 import axios from "axios";
 import modal from "./ModalAnn";
+import moment from "moment";
 
 export default {
   data() {
@@ -54,9 +55,11 @@ export default {
     getImage(imagepath){
       return "assets/images/"+imagepath;
     },
-    formatdate(date){
-      return  date.replace(/T/, ' '). replace(/\..+/, '');
-    }
+    format_date(value){
+      if(value) {
+        return moment(String(value)).format("dddd, MMMM Do YYYY, h:mm:ss a");
+      }
+    },
   },
   beforeMount() {
     const url = "http://localhost:3000/read/announcements";
