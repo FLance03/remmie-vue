@@ -1,12 +1,15 @@
 <template>
   <div>
     <gen-nav v-if="page == 0" v-bind:type="accountType" v-bind:pages="pages" v-on:navigate="changePage($event)">
+      <!-- <p>this is an icon</p> -->
       <dashboard></dashboard>
     </gen-nav>
     <gen-nav v-else-if="page == 1" v-bind:type="accountType" v-bind:pages="pages" v-on:navigate="changePage($event)">
+      <!-- <p>this is an icon</p> -->
       <announcement-board></announcement-board>
     </gen-nav>
     <gen-nav v-else-if="page == 2" v-bind:type="accountType" v-bind:pages="pages" v-on:navigate="changePage($event)">
+      <!-- <p>this is an icon</p> -->
       <accounts></accounts>
     </gen-nav>
   </div>
