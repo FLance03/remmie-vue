@@ -21,7 +21,7 @@ app.get('/isloggedin', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(false);
+    res.send(true);
 });
 
 app.post('/authenticate',urlencodedParser, async (req, res) => {
@@ -37,6 +37,7 @@ app.post('/authenticate',urlencodedParser, async (req, res) => {
         if (authenticate == true){
             // Authenticated so i guess dinhi ang setting sa session?
             // type kay ang user type
+            console.log('dfoisjodfjsoifjsdoifjsofjsdofjsdiojfo');
             res.send(true);
         }else {
             res.send(false);

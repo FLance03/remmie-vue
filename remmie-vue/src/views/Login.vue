@@ -31,7 +31,7 @@
       <div class="limiter">
         <div class="container-login100">
           <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
-            <form class="login100-form validate-form flex-sb flex-w">
+            <form class="login100-form validate-form flex-sb flex-w" v-on:submit.prevent="Authenticate()">
               <span class="login100-form-title p-b-15">
                 remmie
               </span>
@@ -42,7 +42,7 @@
                 Email
               </span>
               <div class="wrap-input100 validate-input m-b-36" data-validate = "Email is required">
-                <input class="input100" type="email" name="email" v-model="email">
+                <input class="input100" type="email" name="email" v-model="email" required="required">
                 <span class="focus-input100"></span>
               </div>
               
@@ -50,22 +50,19 @@
                 Password
               </span>
               <div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
-                <input class="input100" type="password" name="pass" v-model="password">
+                <input class="input100" type="password" name="pass" v-model="password" required="required">
                 <span class="focus-input100"></span>
               </div>
               
               <div class="flex-sb-m w-full p-b-48">
-                <div>
-                  <a href="#" class="txt3">
-                    Forgot Password?
-                  </a>
+                <div style="color:red" v-show="wrongPassword">
+                   Incorrect credentials
                 </div>
               </div>
 
               <div class="container-login100-form-btn p-b-32">
-                <button class="login100-form-btn" v-on:click="Authenticate()">
-                  Login
-                </button>
+                <input type="submit" class="login100-form-btn" value="Login">
+                 
               </div>
             </form>
               <span class="login100-form-disclaimer">
@@ -107,6 +104,7 @@ export default {
         return {
             email: '',
             password: '',
+            wrongPassword: false,
         };
     },
     methods: {
@@ -122,7 +120,9 @@ export default {
             }).then( (response) => {
                 // console.log(response.data)
                 if (response.data == true){
-                    this.$router.replace({ name: 'Table'});
+                  this.$router.replace({ name: 'Table'});
+                }else {
+                  this.wrongPassword = true;
                 }
             }).catch( e => console.log(e));
         }

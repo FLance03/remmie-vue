@@ -63,6 +63,7 @@ exports.readAnnouncements = async function readAnnouncements(){
             // latest 5 announcements
             date_deleted: null,
         },
+        order: [['start_time', 'DESC']]
     }).then(value => {
         retVal = value;
     }).catch(e => {

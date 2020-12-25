@@ -27,6 +27,7 @@
           <div class="modal-body">
             <div class="form">
               <form class="" v-on:submit.prevent>
+                <input type="file">
                 <input
                   v-model="title"
                   required

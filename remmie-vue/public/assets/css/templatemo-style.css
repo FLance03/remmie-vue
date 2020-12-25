@@ -535,7 +535,7 @@ ul.table-pagination {
     text-align: center;
 }
 
-ul.table-pagination li {
+ul.table-pagination li, .login100-form-btn {
     display: inline-block;
     cursor: pointer;
     -webkit-touch-callout: none; /* iOS Safari */
