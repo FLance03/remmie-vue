@@ -99,7 +99,7 @@ app.get('/read/usertype', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    
+    // console.log(usertype);
     res.send(sess.user_type);
 });
 
@@ -182,7 +182,7 @@ app.get('/read/bookinginformation',  authorizeAccess, async (req, res) => {
 
 app.get('/read/roomorders',  authorizeAccess, async (req, res) => {
 
-    //Hi sir, this is from our other assumed hotel database smiley face :)
+    //Product List obtained from database from assumed Partnered Hotel
     let orders = [
         { id: 1, prodName: 'Burger King Deluxe Omega', price: 50.0, desc: 'Awesomeness in mouth' },
         { id: 2, prodName: 'Shanghai Lumpia', price: 225.0, desc: 'Awesomeness in mouth' },

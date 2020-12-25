@@ -33,6 +33,7 @@
                   required
                   type="text"
                   placeholder="Insert title here"
+                  maxlength="60"
                 />
                 <textarea
                   v-model="description"
@@ -40,6 +41,7 @@
                   class="form-control mb-3"
                   placeholder="Event description"
                   rows="5"
+                  maxlength="200"
                 />
                 <p class="text-left">Start Time</p>
                 <input 
