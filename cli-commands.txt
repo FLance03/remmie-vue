@@ -1,6 +1,6 @@
 npx sequelize migration:generate --name add_test_table
 npx sequelize-cli db:migrate
-npx sequelize-cli db:migrate:undo
+npx sequelize-cli db:migrate:undo:all
 
 npx sequelize-cli seed:generate --name demo-reservation
 npx sequelize-cli db:seed:all

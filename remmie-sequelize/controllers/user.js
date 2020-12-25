@@ -1,4 +1,6 @@
 const { user } = require("../models/index");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 exports.readStaff = async function readStaff(){
     let retVal = [];
@@ -17,8 +19,11 @@ exports.readStaff = async function readStaff(){
 
 exports.createStaff = async function createStaff(body){
     let bool = true;
+    let salt = bcrypt.genSaltSync(saltRounds);
+    let hashedPassword = bcrypt.hashSync(body.password,salt);
+    
     await user.create({
-        email: body.email, password: body.password, user_type: 'staff', first_name: body.first_name, last_name: body.last_name,
+        email: body.email, password: hashedPassword, user_type: 'staff', first_name: body.first_name, last_name: body.last_name,
     }).catch(e => {
         bool = false;
         throw e;
@@ -34,12 +39,14 @@ exports.authenticate = async function authenticate(email, password) {
         attributes: ['user_type'],
         where: {
             email: email,
-            password: password,
         }
     }).then(value => {
-        return value==null ? {authenticate:false, type: null} : {authenticate:true, type: value};
+        if (value!=null && bcrypt.compareSync(password, value['password'])){
+            return {authenticate:true, type: value};
+        }else {
+            return {authenticate:false, type: null};
+        }
     }).catch(e => {
-        bool = false;
         throw e;
     });
 }

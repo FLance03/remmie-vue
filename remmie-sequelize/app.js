@@ -53,7 +53,7 @@ app.get('/isloggedin', (req, res) => {
     res.send(false);
 });
 
-app.post('/authenticate', async (req, res) => {
+app.post('/authenticate',urlencodedParser, async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -61,6 +61,7 @@ app.post('/authenticate', async (req, res) => {
     let data = false;
     if (req.body.email!=undefined && req.body.password!=undefined){
         let {authenticate, type} = await user.authenticate(req.body.email,req.body.password);
+        
         if (authenticate == true){
             sess.loggedin = true;
             sess.user_type = type["user_type"];
@@ -80,6 +81,7 @@ app.get('/read/usertype', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
+    console.log(usertype);
     res.send(usertype);
 });
 
