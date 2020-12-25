@@ -42,7 +42,7 @@
                 Username
               </span>
               <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
-                <input class="input100" type="text" name="username" >
+                <input class="input100" type="email" name="email" v-model="email" >
                 <span class="focus-input100"></span>
               </div>
               
@@ -50,7 +50,7 @@
                 Password
               </span>
               <div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
-                <input class="input100" type="password" name="pass" >
+                <input class="input100" type="password" name="pass" v-model="password" >
                 <span class="focus-input100"></span>
               </div>
               
@@ -105,25 +105,29 @@ import axios from 'axios';
 export default {
     data(){
         return {
-            username: '',
+            email: '',
             password: '',
         };
     },
     methods: {
         Authenticate: function() {
+          console.log(this.username);
             const url = "http://localhost:3000/authenticate";
-            // console.log(this.username);
+            console.log(this.email);
+            console.log(this.password);
             axios({
                 method: 'POST',
                 url: url,
                 data: {
-                    username: this.username,
+                    email: this.email,
                     password: this.password,
                 }
             }).then( (response) => {
                 // console.log(response.data)
                 if (response.data == true){
                     this.$router.replace({ name: 'Table'});
+                } else {
+                    // refresh page or something
                 }
             }).catch( e => console.log(e));
         }

@@ -30,6 +30,7 @@ exports.authenticate = async function authenticate(email, password) {
     let authenticate = false;
 
     return await user.findOne({
+        raw: true,
         attributes: ['user_type'],
         where: {
             email: email,

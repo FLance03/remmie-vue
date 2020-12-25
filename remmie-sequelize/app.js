@@ -2,19 +2,48 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: true});
 const cors = require('cors');
+const session = require('express-session');
 const app = express();
 const usertype = 'admin'; // DELETE afterwards
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
+app.use(session({secret: 'remmie-vue', saveUninitialized: true, resave: true}))
 
 //Controllers
+
 const user = require("./controllers/user");
 const room_service = require("./controllers/room_service");
 const announcements = require("./controllers/announcement");
 const reservation = require("./controllers/reservation");
 const line_items = require("./controllers/line_item");
+
+// session
+let sess = {
+    loggedin: false,
+    user_type: null
+};
+
+// checkusertype
+function authorizeAccess(req, res, next) {
+    // check if trying to access pages without login in
+    // check if usertype matches the pages they are trying to access
+    // where to redirect (?)
+    if(sess.loggedin==true){
+        return next();
+    } else {
+        res.redirect("localhost:8080");
+    }
+}
+
+function checkAdmin(req, res, next) {
+    if(sess.loggedin==true&&sess.user_type == "admin"){
+        return next();
+    } else {
+        res.redirect("localhost:8080");
+    }
+}
 
 app.get('/isloggedin', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
@@ -30,13 +59,11 @@ app.post('/authenticate', async (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     let data = false;
-    console.log(req.body.email)
     if (req.body.email!=undefined && req.body.password!=undefined){
         let {authenticate, type} = await user.authenticate(req.body.email,req.body.password);
         if (authenticate == true){
-            // Authenticated so i guess dinhi ang setting sa session?
-            // type kay ang user type
-            console.log(type);
+            sess.loggedin = true;
+            sess.user_type = type["user_type"];
             res.send(true);
         }else {
             res.send(false);
@@ -44,7 +71,6 @@ app.post('/authenticate', async (req, res) => {
     }else {
         res.send(false);
     }
-
 });
 
 
@@ -57,7 +83,7 @@ app.get('/read/usertype', (req, res) => {
     res.send(usertype);
 });
 
-app.get('/read/lineitems', async (req,res)=>{
+app.get('/read/lineitems',  checkAdmin, async (req,res)=>{
     let data = await line_items.readLineitems();
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
@@ -66,7 +92,7 @@ app.get('/read/lineitems', async (req,res)=>{
     res.send(JSON.stringify(data));
 });
 
-app.get('/read/announcements', async (req,res)=>{
+app.get('/read/announcements',  checkAdmin, async (req,res)=>{
     let data = await announcements.readAnnouncements();
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -75,7 +101,7 @@ app.get('/read/announcements', async (req,res)=>{
     res.send(JSON.stringify(data));
 });
 
-app.get('/read/staff', async (req, res) => {
+app.get('/read/staff',  checkAdmin, async (req, res) => {
     let data = await user.readStaff();
     let response = [];
     for (let i = 0; i < data.length; i++) {
@@ -89,37 +115,19 @@ app.get('/read/staff', async (req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(JSON.stringify(response));
-    // let test = [
-    //     {"staffName":"VincentA","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentB","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentC","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentD","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentE","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentF","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentG","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentH","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentI","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentJ","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentK","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentL","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentM","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentN","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentO","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentP","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentQ","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentR","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentS","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentT","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentU","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentV","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentW","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentX","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentY","dateCreated":"January 2, 2020"},
-    //     {"staffName":"VincentZ","dateCreated":"January 2, 2020"},
-    // ];
 });
 
-app.get('/read/bookinginformation', async (req, res) => {
+app.get('/logout',  async (req, res) => {
+    sess = req.session;
+    req.session.destroy((err) => {
+        if(err) {
+            return console.log(err);
+        }
+        res.redirect('localhost:8080');
+    });
+});
+
+app.get('/read/bookinginformation',  authorizeAccess, async (req, res) => {
 
     let data = await reservation.readBookingInformation();
     let response = [];
@@ -152,7 +160,7 @@ app.get('/read/bookinginformation', async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomorders', async (req, res) => {
+app.get('/read/roomorders',  authorizeAccess, async (req, res) => {
 
     //Hi sir, this is from our other assumed hotel database smiley face :)
     let orders = [
@@ -193,7 +201,7 @@ app.get('/read/roomorders', async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomcleaning', async (req, res) => {
+app.get('/read/roomcleaning',  authorizeAccess, async (req, res) => {
     let data = await room_service.readCleaning();
     let response = [];
     let username;
@@ -218,7 +226,7 @@ app.get('/read/roomcleaning', async (req, res) => {
 });
 
 //WRITING QUERIES-----------------------------------------------------------------------
-app.post('/write/staff', async (req, res) => {
+app.post('/write/staff',  checkAdmin, async (req, res) => {
     let bool = await user.createStaff(req.body);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -227,7 +235,7 @@ app.post('/write/staff', async (req, res) => {
     res.send(JSON.stringify(bool));
 });
 
-app.post('/write/announcement', async (req, res) => {
+app.post('/write/announcement',  checkAdmin, async (req, res) => {
         let bool = await announcements.createAnnouncements(req.body);
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
         res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -238,7 +246,7 @@ app.post('/write/announcement', async (req, res) => {
 });
 
 //UPDATING QUERIES-----------------------------------------------------------------------
-app.post('/update/roomorder_status', async (req, res) => {
+app.post('/update/roomorder_status',  authorizeAccess, async (req, res) => {
     let bool = await room_service.updateStatus(req.body);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
