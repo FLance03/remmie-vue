@@ -109,6 +109,7 @@ export default {
     },
     methods: {
         Authenticate: function() {
+          console.log(this.username);
             const url = "http://localhost:3000/authenticate";
             axios({
                 method: 'POST',
