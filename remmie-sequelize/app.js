@@ -184,8 +184,7 @@ app.get('/read/bookinginformation', verifyToken, async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomorders', async (req, res) => {
-
+app.get('/read/roomorders', verifyToken, isStaff, async (req, res) => {
     //Product List obtained from database from assumed Partnered Hotel
     let orders = [
         { id: 1, prodName: 'Burger King Deluxe Omega', price: 50.0, desc: 'Awesomeness in mouth' },
@@ -205,7 +204,7 @@ app.get('/read/roomorders', async (req, res) => {
 
     for (let i = 0; i < data.length; i++) {
         username = data[i].user.first_name + ' ' + data[i].user.last_name;
-        order = data[i].line_items[0].quantity + ' ' + orders[data[i].line_items[0].product_id].prodName;
+        order = data[i].line_items[0].quantity + ' ' + orders[data[i].line_items[0].product_id%6].prodName;
         room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;
         status = (data[i].time_serviced == null) ? 'PENDING' : 'FINISHED',
         response.push({
@@ -224,12 +223,13 @@ app.get('/read/roomorders', async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomcleaning', async (req, res) => {
+app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
     let data = await room_service.readCleaning();
     let response = [];
     let username;
     let room;
     let status;
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
         username = data[i].user.first_name + ' ' + data[i].user.last_name;
         room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;
