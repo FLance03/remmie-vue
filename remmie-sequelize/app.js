@@ -5,6 +5,7 @@ const cors = require('cors');
 const session = require('express-session');
 const formidable = require('formidable');
 const fs = require('fs');
+const mv = require('mv');
 const app = express();
 const jwt = require('jsonwebtoken');
 const config = require('./config/config');
@@ -71,13 +72,18 @@ function isStaff(req, res, next){
     next();
 }
 
-app.post('/upload/announcementimage', (req,res)=>{
+app.post('/upload/announcementimage', verifyToken, isAdmin, (req,res)=>{
+    console.log('asfdfdsfsdf');
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.announcementimage.path;
         var newpath = `${__dirname}/../remmie-vue/public/assets/images/` + files.announcementimage.name;
-        fs.rename(oldpath, newpath, function (err) {
+        mv(oldpath, newpath, function (err) {
           if (err) throw err;
+          res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+          res.setHeader('Access-Control-Allow-Methods', 'POST');
+          res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+          res.setHeader('Access-Control-Allow-Credentials', true);
           res.send('File uploaded and moved!');
         });
     });
