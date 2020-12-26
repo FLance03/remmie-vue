@@ -1,7 +1,7 @@
 'use strict';
 
 const str = require('@supercharge/strings');
-const numMax=3;
+const numMax=5;
 
 function randomDate(){
     return new Date(+(new Date()) - Math.floor(Math.random()*10000000000));
@@ -20,6 +20,7 @@ function convertDateTime(date_ob){
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const demoAnnounce = [];
+    const fileNames = ['food1.jpg','simple-post.jpg','top-image.jpg','konlulu.jpg','Kyubey3.png']
     for(let i=0; i<numMax; i++){
       let title = str.random(20);
       let description = '';
@@ -34,7 +35,7 @@ module.exports = {
         title: title,
         start_time: time,
         end_time: time,
-        image: "food1.jpg",
+        image: fileNames[i],
         description: description,
         date_created: date,
         date_updated: date,
