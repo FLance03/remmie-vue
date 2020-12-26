@@ -134,11 +134,6 @@ export default {
             }).catch( e => console.log(e));
         }
     },
-    // beforeMount() {
-    //     if(this.$store.state.isUserLoggedIn){
-    //       this.$router.replace({ name: 'Table'});
-    //     }
-    // }
 }
 </script>
 

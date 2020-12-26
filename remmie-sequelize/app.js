@@ -36,12 +36,10 @@ function jwtSignUser(user){
 
 function verifyToken(req, res, next){
     const headers = req.headers;
-    // console.log(headers);
     let token = headers["authorization"];
     if (headers["loggedin"]==false){
         return res.redirect("localhost:8080/");
     }
-    
     if (!token) {
       return res.redirect("localhost:8080/");
     }
@@ -78,7 +76,6 @@ app.post('/upload/announcementimage',(req,res)=>{
     form.parse(req, function (err, fields, files) {
         var oldpath = files.announcementimage.path;
         var newpath = `${__dirname}/../remmie-vue/public/assets/images/` + files.announcementimage.name;
-        console.log(newpath);
         fs.rename(oldpath, newpath, function (err) {
           if (err) throw err;
           res.send('File uploaded and moved!');
@@ -87,17 +84,16 @@ app.post('/upload/announcementimage',(req,res)=>{
     // const file = `${__dirname}/upload-folder/dramaticpenguin.MOV`;
     // res.download(file); // Set disposition and send it.
 });
+
 app.get('/isloggedin', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    console.log(sess.usertype!=undefined )
-    console.log((sess.user_type=='staff' || sess.usertype=='admin'))
     res.send(sess.user_type!=undefined && (sess.user_type=='staff' || sess.user_type=='admin'));
 });
 
-app.post('/authenticate',urlencodedParser, async (req, res) => {
+app.post('/authenticate', urlencodedParser, async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -111,7 +107,7 @@ app.post('/authenticate',urlencodedParser, async (req, res) => {
                 type: type['user_type'],
                 token: jwtSignUser(type)
             });
-        }else {
+        } else {
             res.send(false);
         }
     }else {
@@ -123,9 +119,6 @@ app.post('/authenticate',urlencodedParser, async (req, res) => {
 //READING QUERIES-----------------------------------------------------------------------
 
 app.get('/read/lineitems', verifyToken, isAdmin, async (req,res)=>{
-    const headers = req.headers;
-    console.log(headers["authorization"]);
-    console.log(headers["type"]);
     let data = await line_items.readLineitems();
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
@@ -143,7 +136,7 @@ app.get('/read/announcements', verifyToken, isAdmin, async (req,res)=>{
     res.send(JSON.stringify(data));
 });
 
-app.get('/read/staff', verifyToken, isStaff, async (req, res) => {
+app.get('/read/staff', verifyToken, isAdmin, async (req, res) => {
     let data = await user.readStaff();
     let response = [];
     for (let i = 0; i < data.length; i++) {
@@ -159,11 +152,7 @@ app.get('/read/staff', verifyToken, isStaff, async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/logout',  async (req, res) => {
-// LOGOUT STUFF HERE
-});
-
-app.get('/read/bookinginformation', verifyToken, isAdmin, async (req, res) => {
+app.get('/read/bookinginformation', verifyToken, async (req, res) => {
     let data = await reservation.readBookingInformation();
     let response = [];
     let userName;
@@ -260,10 +249,11 @@ app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
 });
 
 //WRITING QUERIES-----------------------------------------------------------------------
-app.post('/write/staff', verifyToken, isStaff, async (req, res) => {
+app.post('/write/staff', verifyToken, isAdmin, async (req, res) => {
+    console.log(req.headers)
     let bool = await user.createStaff(req.body);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(JSON.stringify(bool));
