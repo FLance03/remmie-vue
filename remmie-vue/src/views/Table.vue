@@ -25,7 +25,6 @@ export default {
     };
   },
   mounted() {
-<<<<<<< HEAD
     this.usertype = this.$store.state.usertype;
     var vm = this;
     Vue.nextTick(function(){
@@ -110,20 +109,6 @@ export default {
       custom.setAttribute('src', 'assets/js/custom.js')
       document.head.appendChild(custom)
     }.bind(vm));
-=======
-    const url = "http://localhost:3000/read/usertype";
-    const vm = this;
-    axios.get(url).then( (response) => {
-      if (response.data == false){
-          this.$router.replace({ name: 'Login'});
-      }else {
-          this.usertype = response.data;
-      }
-      Vue.nextTick(function(){
-        headers();
-      }.bind(vm));
-    }).catch( e => console.log(e));
->>>>>>> baf417a258e293abb544f03da6944f4dbfed46ca
   },
   beforeMount(){
     if (this.$store.state.isUserLoggedIn == false){

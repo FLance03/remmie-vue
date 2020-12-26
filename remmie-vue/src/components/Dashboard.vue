@@ -90,7 +90,6 @@ export default {
             this.total[date.getMonth()] += data["price"]*data["quantity"];
           }
         }
-<<<<<<< HEAD
         // july to december
         for(let i=6; i<12; i++){
           this.pushArray(this.barData, [month[i], this.total[i]]);
@@ -109,16 +108,6 @@ export default {
         for (count = 0, i = 0; i < response.data.length; i++, count++) {
           this.reservationData.push(response.data[i]);
         }
-=======
-        let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-        for (let i=0 ; i<12 ; i++){
-          if (this.total[i] != undefined){
-            this.pushArray(this.chartData, [months[i], this.total[i]]);
-          }
-        }
-        // this.pushArray(this.chartData, ['November', this.total[10]]);
-        // this.pushArray(this.chartData, ['December', this.total[11]]);
->>>>>>> baf417a258e293abb544f03da6944f4dbfed46ca
       })
       .catch((e) => console.log(e));
   },
