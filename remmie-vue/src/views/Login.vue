@@ -79,6 +79,7 @@
   </div>
 </template>
 
+
 <!--===============================================================================================-->
   <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -109,7 +110,6 @@ export default {
     },
     methods: {
         Authenticate: function() {
-          console.log(this.username);
             const url = "http://localhost:3000/authenticate";
             axios({
                 method: 'POST',
@@ -117,10 +117,16 @@ export default {
                 data: {
                     email: this.email,
                     password: this.password,
+                },
+                headers: {
+                  'Authorization': this.$store.state.token,
+                  'Usertype': this.$store.state.usertype,
+                  'Loggedin': this.$store.state.isUserLoggedIn,
                 }
             }).then( (response) => {
-                // console.log(response.data)
-                if (response.data == true){
+                if (response.data != false){
+                  this.$store.dispatch('setToken', response.data.token);
+                  this.$store.dispatch('setUsertype', response.data.type);
                   this.$router.replace({ name: 'Table'});
                 }else {
                   this.wrongPassword = true;
@@ -128,15 +134,11 @@ export default {
             }).catch( e => console.log(e));
         }
     },
-    beforeMount() {
-        const url = "http://localhost:3000/isloggedin";
-
-        axios.get(url).then((response) => {
-            if (response.data == true){
-                this.$router.replace({ name: 'Table'});
-            }
-        }).catch( e => console.log(e));
-    }
+    // beforeMount() {
+    //     if(this.$store.state.isUserLoggedIn){
+    //       this.$router.replace({ name: 'Table'});
+    //     }
+    // }
 }
 </script>
 

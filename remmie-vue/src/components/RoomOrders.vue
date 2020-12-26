@@ -70,7 +70,13 @@ export default {
       };
       const url = "http://localhost:3000/update/roomorder_status";
       axios
-        .post(url, body)
+        .post(url, body, {
+          headers: {
+            'Authorization': this.$store.state.token,
+            'Usertype': this.$store.state.usertype,
+            'Loggedin': this.$store.state.isUserLoggedIn,
+          }
+        })
         .then((res) => {
           if (res.data) {
             console.log("Room Order Status Updated");

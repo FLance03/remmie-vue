@@ -1,7 +1,7 @@
 'use strict';
 
 const str = require('@supercharge/strings');
-const numMax = 10;
+const numMax = 100;
 
 function between(min, max) {  
   return Math.floor(
@@ -9,8 +9,9 @@ function between(min, max) {
   )
 }
 
-function randomDate(){
-  return new Date(+(new Date()) - Math.floor(Math.random()*10000000000));
+function randomDate(start, end) {
+  var date = new Date(+start + Math.random() * (end - start));
+  return date;
 }
 
 module.exports = {
@@ -19,7 +20,9 @@ module.exports = {
 
     
     for(let i=0; i<numMax; i++){
-      let date = randomDate();
+      let start = new Date("July 1, 2020 00:00:00");
+      let end = new Date("December 31, 2020 00:00:00");
+      let date = randomDate(start, end);
       let room_service_id = between(1, 100);
       let product_id = between(1, 100); 
       let price = between(100, 1000);

@@ -32,17 +32,15 @@ exports.createStaff = async function createStaff(body){
 }
 
 exports.authenticate = async function authenticate(email, password) {
-    let authenticate = false;
-
     return await user.findOne({
         raw: true,
-        attributes: ['user_type','password'],
+        attributes: ['user_type','password','email'],
         where: {
             email: email,
         }
     }).then(value => {
         if (value!=null && bcrypt.compareSync(password, value['password'])){
-            return {authenticate:true, type: value};
+            return {authenticate:true, type: {email: value['email'], user_type: value['user_type']}};
         }else {
             return {authenticate:false, type: null};
         }

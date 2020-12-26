@@ -35,6 +35,7 @@ export default {
   methods: {
     changePage: function(page) {
       if (page == 3){
+        this.$store.dispatch('destroySession');
         this.$router.push({ name: 'Login'})
       }
       this.page = page;

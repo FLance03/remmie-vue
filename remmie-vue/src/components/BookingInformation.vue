@@ -64,7 +64,13 @@ export default {
     const url = "http://localhost:3000/read/bookinginformation";
 
     axios
-      .get(url)
+      .get(url, {
+        headers: {
+          'Authorization': this.$store.state.token,
+          'Usertype': this.$store.state.usertype,
+          'Loggedin': this.$store.state.isUserLoggedIn,
+        }
+      })
       .then((response) => {
         var i, count;
         for (count = 0, i = 0; i < response.data.length; i++, count++) {

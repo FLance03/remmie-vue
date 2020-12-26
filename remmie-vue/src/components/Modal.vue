@@ -123,7 +123,13 @@ export default {
 
         const url = "http://localhost:3000/write/staff";
         axios
-          .post(url, body)
+          .post(url,{
+            headers: {
+              'Authorization': this.$store.state.token,
+              'Usertype': this.$store.state.usertype,
+              'Loggedin': this.$store.state.isUserLoggedIn,
+            }
+          }, body)
           .then((res) => {
             if (res.data) {
               console.log("Staff Account Created");

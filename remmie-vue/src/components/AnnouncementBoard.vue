@@ -42,7 +42,13 @@ export default {
     this.wholeData = [];
     const url = "http://localhost:3000/read/announcements";
     axios
-      .get(url)
+      .get(url, {
+        headers: {
+          'Authorization': this.$store.state.token,
+          'Usertype': this.$store.state.usertype,
+          'Loggedin': this.$store.state.isUserLoggedIn,
+        }
+      })
       .then((response) => {
         var i;
         for (i = 0; i < response.data.length; i++) {
@@ -61,7 +67,13 @@ export default {
   beforeMount() {
     const url = "http://localhost:3000/read/announcements";
     axios
-      .get(url)
+      .get(url, {
+        headers: {
+          'Authorization': this.$store.state.token,
+          'Usertype': this.$store.state.usertype,
+          'Loggedin': this.$store.state.isUserLoggedIn,
+        }
+      })
       .then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           this.wholeData.push(response.data[i]);

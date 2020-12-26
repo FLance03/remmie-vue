@@ -4,11 +4,14 @@ const urlencodedParser = bodyParser.urlencoded({extended: true});
 const cors = require('cors');
 const session = require('express-session');
 const app = express();
-const usertype = 'admin'; // DELETE afterwards
+const jwt = require('jsonwebtoken');
+const config = require('./config/config');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors());
+app.use(cors({
+    credentials: true,
+}));
 app.use(session({secret: 'remmie-vue', saveUninitialized: true, resave: true}))
 
 //Controllers
@@ -20,53 +23,68 @@ const reservation = require("./controllers/reservation");
 const line_items = require("./controllers/line_item");
 
 // session
-let sess = {
-    loggedin: false,
-    user_type: null
+var sess;
+
+function jwtSignUser(user){
+    const ONE_WEEK = 60 * 60 * 24 * 7
+    return jwt.sign({usertype: user}, config.authentication.jwtSecret, {
+        expiresIn: ONE_WEEK
+    })
+}
+
+function verifyToken(req, res, next){
+    const headers = req.headers;
+    // console.log(headers);
+    let token = headers["authorization"];
+    if (headers["loggedin"]==false){
+        return res.redirect("localhost:8080/");
+    }
+    
+    if (!token) {
+      return res.redirect("localhost:8080/");
+    }
+  
+    jwt.verify(token, config.authentication.jwtSecret, (err, decoded) => {
+      if (err) {
+        return res.redirect("localhost:8080/");
+      }
+    });
+
+    next();
 };
 
-// checkusertype
-function authorizeAccess(req, res, next) {
-    // check if trying to access pages without login in
-    // check if usertype matches the pages they are trying to access
-    // where to redirect (?)
-    if(sess.loggedin==true){
-        return next();
-    } else {
-        res.redirect("localhost:8080");
+function isAdmin(req, res, next){
+    const headers = req.headers;
+    let usertype = headers["usertype"];
+    if(usertype!="admin"){
+        return res.redirect("localhost:8080/");
     }
+    next();
 }
 
-function checkAdmin(req, res, next) {
-    if(sess.loggedin==true&&sess.user_type == "admin"){
-        return next();
-    } else {
-        res.redirect("localhost:8080");
+function isStaff(req, res, next){
+    const headers = req.headers;
+    let usertype = headers["usertype"];
+    if(usertype!="staff"){
+        return res.redirect("localhost:8080/");
     }
+    next();
 }
 
-app.get('/isloggedin', (req, res) => {
+app.post('/authenticate', urlencodedParser, async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(false);
-});
-
-app.post('/authenticate',urlencodedParser, async (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    let data = false;
-    console.log(req.body)
     if (req.body.email!=undefined && req.body.password!=undefined){
         let {authenticate, type} = await user.authenticate(req.body.email,req.body.password);
-        
         if (authenticate == true){
-            sess.loggedin = true;
-            sess.user_type = type["user_type"];
-            res.send(true);
+            // sess.loggedin = true;
+            // sess.user_type = type["user_type"];
+            res.send({
+                type: type['user_type'],
+                token: jwtSignUser(type)
+            });
         }else {
             res.send(false);
         }
@@ -77,16 +95,11 @@ app.post('/authenticate',urlencodedParser, async (req, res) => {
 
 
 //READING QUERIES-----------------------------------------------------------------------
-app.get('/read/usertype', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    console.log(usertype);
-    res.send(usertype);
-});
 
-app.get('/read/lineitems',  checkAdmin, async (req,res)=>{
+app.get('/read/lineitems', verifyToken, isAdmin, async (req,res)=>{
+    const headers = req.headers;
+    console.log(headers["authorization"]);
+    console.log(headers["type"]);
     let data = await line_items.readLineitems();
     res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods','GET');
@@ -95,7 +108,7 @@ app.get('/read/lineitems',  checkAdmin, async (req,res)=>{
     res.send(JSON.stringify(data));
 });
 
-app.get('/read/announcements',  checkAdmin, async (req,res)=>{
+app.get('/read/announcements', verifyToken, isAdmin, async (req,res)=>{
     let data = await announcements.readAnnouncements();
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -104,7 +117,7 @@ app.get('/read/announcements',  checkAdmin, async (req,res)=>{
     res.send(JSON.stringify(data));
 });
 
-app.get('/read/staff',  checkAdmin, async (req, res) => {
+app.get('/read/staff', verifyToken, isStaff, async (req, res) => {
     let data = await user.readStaff();
     let response = [];
     for (let i = 0; i < data.length; i++) {
@@ -121,17 +134,10 @@ app.get('/read/staff',  checkAdmin, async (req, res) => {
 });
 
 app.get('/logout',  async (req, res) => {
-    sess = req.session;
-    req.session.destroy((err) => {
-        if(err) {
-            return console.log(err);
-        }
-        res.redirect('localhost:8080');
-    });
+// LOGOUT STUFF HERE
 });
 
-app.get('/read/bookinginformation',  authorizeAccess, async (req, res) => {
-
+app.get('/read/bookinginformation', verifyToken, isAdmin, async (req, res) => {
     let data = await reservation.readBookingInformation();
     let response = [];
     let userName;
@@ -163,7 +169,7 @@ app.get('/read/bookinginformation',  authorizeAccess, async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomorders',  authorizeAccess, async (req, res) => {
+app.get('/read/roomorders', verifyToken, isStaff, async (req, res) => {
 
     //Hi sir, this is from our other assumed hotel database smiley face :)
     let orders = [
@@ -177,7 +183,6 @@ app.get('/read/roomorders',  authorizeAccess, async (req, res) => {
 
     let data = await room_service.readOrders();
     let response = [];
-
     let username;
     let room;
     let order;
@@ -204,7 +209,7 @@ app.get('/read/roomorders',  authorizeAccess, async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomcleaning',  authorizeAccess, async (req, res) => {
+app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
     let data = await room_service.readCleaning();
     let response = [];
     let username;
@@ -229,7 +234,7 @@ app.get('/read/roomcleaning',  authorizeAccess, async (req, res) => {
 });
 
 //WRITING QUERIES-----------------------------------------------------------------------
-app.post('/write/staff',  checkAdmin, async (req, res) => {
+app.post('/write/staff', verifyToken, isStaff, async (req, res) => {
     let bool = await user.createStaff(req.body);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -238,7 +243,7 @@ app.post('/write/staff',  checkAdmin, async (req, res) => {
     res.send(JSON.stringify(bool));
 });
 
-app.post('/write/announcement',  checkAdmin, async (req, res) => {
+app.post('/write/announcement', verifyToken, isAdmin, async (req, res) => {
         let bool = await announcements.createAnnouncements(req.body);
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
         res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -249,7 +254,7 @@ app.post('/write/announcement',  checkAdmin, async (req, res) => {
 });
 
 //UPDATING QUERIES-----------------------------------------------------------------------
-app.post('/update/roomorder_status',  authorizeAccess, async (req, res) => {
+app.post('/update/roomorder_status', verifyToken, isStaff, async (req, res) => {
     let bool = await room_service.updateStatus(req.body);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');

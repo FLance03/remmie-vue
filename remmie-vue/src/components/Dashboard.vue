@@ -6,11 +6,14 @@
           <div id="card">            
             <GChart
               type="ColumnChart"
-              :data="chartData"
-              :options="chartOptions"
+              :data="barData"
+              :options="chartOptionsBar"
             />
           </div>
         </div>
+        
+      </div>
+      <div id="row">
         <div id="col-mb-5">
           <div id="card">
             <booking-information></booking-information>
@@ -30,20 +33,21 @@ import bookinginformation from "./BookingInformation"
 import axios from "axios"
 import { GChart } from 'vue-google-charts'
 
+var month = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 export default {
   data() {
     return {
       wholeData: [],
+      reservationData: [],
+      donutData: [],
       total: [],
-      chartData: [
+      barData: [
         ['Month', 'Sales'],
-        
       ],
-      chartOptions: {
-        chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales for the last 3 months',
-        }
+      chartOptionsBar: {
+          title: 'Total Sales for the last 6 months',
+          height: 400,
       },
     };
   },
@@ -64,9 +68,17 @@ export default {
     }
   },
   beforeMount() {
-    const url = "http://localhost:3000/read/lineitems";
+    const urlline = "http://localhost:3000/read/lineitems";
+    const urlreservation = "http://localhost:3000/read/bookinginformation";
+    console.log(this.$store.state);
     axios
-      .get(url)
+      .get(urlline, {
+        headers: {
+          'Authorization': this.$store.state.token,
+          'Usertype': this.$store.state.usertype,
+          'Loggedin': this.$store.state.isUserLoggedIn,
+        }
+      })
       .then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           let data = response.data[i];
@@ -78,9 +90,24 @@ export default {
             this.total[date.getMonth()] += data["price"]*data["quantity"];
           }
         }
-        this.pushArray(this.chartData, ['October', this.total[9]]);
-        this.pushArray(this.chartData, ['November', this.total[10]]);
-        this.pushArray(this.chartData, ['December', this.total[11]]);
+        // july to december
+        for(let i=6; i<12; i++){
+          this.pushArray(this.barData, [month[i], this.total[i]]);
+        }
+      }).catch((e) => console.log(e));
+    axios
+      .get(urlreservation, {
+        headers: {
+          'Authorization': this.$store.state.token,
+          'Usertype': this.$store.state.usertype,
+          'Loggedin': this.$store.state.isUserLoggedIn,
+        }
+      })
+      .then((response) => {
+        var i, count;
+        for (count = 0, i = 0; i < response.data.length; i++, count++) {
+          this.reservationData.push(response.data[i]);
+        }
       })
       .catch((e) => console.log(e));
   },
