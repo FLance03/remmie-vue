@@ -11,6 +11,7 @@ Don't forget to run npm install in both remmie-vue and remmie-sequelize because 
 N O T E      F O R     S I R     E A N:
 Product List obtained from database from assumed partnered hotel.
 This data is not part of our database definitions but is needed for display in staff accounts.
+Vue port is 8080, sequelize 3000
 ```
 // in app.js
 let orders = [
