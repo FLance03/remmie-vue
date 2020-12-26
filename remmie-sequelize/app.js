@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({extended: true});
+const urlencodedParser = bodyParser.urlencoded({ extended: true });
 const cors = require('cors');
 const session = require('express-session');
 const formidable = require('formidable');
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
     credentials: true,
 }));
-app.use(session({secret: 'remmie-vue', saveUninitialized: true, resave: true}))
+app.use(session({ secret: 'remmie-vue', saveUninitialized: true, resave: true }))
 
 //Controllers
 
@@ -27,58 +27,58 @@ const line_items = require("./controllers/line_item");
 // session
 var sess;
 
-function jwtSignUser(user){
+function jwtSignUser(user) {
     const ONE_WEEK = 60 * 60 * 24 * 7
-    return jwt.sign({usertype: user}, config.authentication.jwtSecret, {
+    return jwt.sign({ usertype: user }, config.authentication.jwtSecret, {
         expiresIn: ONE_WEEK
     })
 }
 
-function verifyToken(req, res, next){
+function verifyToken(req, res, next) {
     const headers = req.headers;
     let token = headers["authorization"];
-    if (headers["loggedin"]==false){
+    if (headers["loggedin"] == false) {
         return res.redirect("localhost:8080/");
     }
     if (!token) {
-      return res.redirect("localhost:8080/");
-    }
-  
-    jwt.verify(token, config.authentication.jwtSecret, (err, decoded) => {
-      if (err) {
         return res.redirect("localhost:8080/");
-      }
+    }
+
+    jwt.verify(token, config.authentication.jwtSecret, (err, decoded) => {
+        if (err) {
+            return res.redirect("localhost:8080/");
+        }
     });
 
     next();
 };
 
-function isAdmin(req, res, next){
+function isAdmin(req, res, next) {
     const headers = req.headers;
     let usertype = headers["usertype"];
-    if(usertype!="admin"){
+    if (usertype != "admin") {
         return res.redirect("localhost:8080/");
     }
     next();
 }
 
-function isStaff(req, res, next){
+function isStaff(req, res, next) {
     const headers = req.headers;
     let usertype = headers["usertype"];
-    if(usertype!="staff"){
+    if (usertype != "staff") {
         return res.redirect("localhost:8080/");
     }
     next();
 }
 
-app.post('/upload/announcementimage',(req,res)=>{
+app.post('/upload/announcementimage', (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.announcementimage.path;
         var newpath = `${__dirname}/../remmie-vue/public/assets/images/` + files.announcementimage.name;
         fs.rename(oldpath, newpath, function (err) {
-          if (err) throw err;
-          res.send('File uploaded and moved!');
+            if (err) throw err;
+            res.send('File uploaded and moved!');
         });
     });
     // const file = `${__dirname}/upload-folder/dramaticpenguin.MOV`;
@@ -90,7 +90,7 @@ app.get('/isloggedin', (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(sess.user_type!=undefined && (sess.user_type=='staff' || sess.user_type=='admin'));
+    res.send(sess.user_type != undefined && (sess.user_type == 'staff' || sess.user_type == 'admin'));
 });
 
 app.post('/authenticate', urlencodedParser, async (req, res) => {
@@ -98,9 +98,9 @@ app.post('/authenticate', urlencodedParser, async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
-    if (req.body.email!=undefined && req.body.password!=undefined){
-        let {authenticate, type} = await user.authenticate(req.body.email,req.body.password);
-        if (authenticate == true){
+    if (req.body.email != undefined && req.body.password != undefined) {
+        let { authenticate, type } = await user.authenticate(req.body.email, req.body.password);
+        if (authenticate == true) {
             // sess.loggedin = true;
             // sess.user_type = type["user_type"];
             res.send({
@@ -110,24 +110,23 @@ app.post('/authenticate', urlencodedParser, async (req, res) => {
         } else {
             res.send(false);
         }
-    }else {
+    } else {
         res.send(false);
     }
 });
 
 
 //READING QUERIES-----------------------------------------------------------------------
-
-app.get('/read/lineitems', verifyToken, isAdmin, async (req,res)=>{
+app.get('/read/lineitems', verifyToken, isAdmin, async (req, res) => {
     let data = await line_items.readLineitems();
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods','GET');
-    res.setHeader('Access-Control-Allow-Headers','X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials',true);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(JSON.stringify(data));
 });
 
-app.get('/read/announcements', verifyToken, isAdmin, async (req,res)=>{
+app.get('/read/announcements', verifyToken, isAdmin, async (req, res) => {
     let data = await announcements.readAnnouncements();
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -185,7 +184,9 @@ app.get('/read/bookinginformation', verifyToken, async (req, res) => {
 });
 
 app.get('/read/roomorders', verifyToken, isStaff, async (req, res) => {
-    //Product List obtained from database from assumed Partnered Hotel
+    //N O T E      F O R     S I R     E A N
+    //Product List obtained from database from assumed partnered hotel.
+    //This data is not part of our database definitions but is needed for display in staff accounts.
     let orders = [
         { id: 1, prodName: 'Burger King Deluxe Omega', price: 50.0, desc: 'Awesomeness in mouth' },
         { id: 2, prodName: 'Shanghai Lumpia', price: 225.0, desc: 'Awesomeness in mouth' },
@@ -204,16 +205,16 @@ app.get('/read/roomorders', verifyToken, isStaff, async (req, res) => {
 
     for (let i = 0; i < data.length; i++) {
         username = data[i].user.first_name + ' ' + data[i].user.last_name;
-        order = data[i].line_items[0].quantity + ' ' + orders[data[i].line_items[0].product_id%6].prodName;
+        order = data[i].line_items[0].quantity + ' ' + orders[data[i].line_items[0].product_id % 6].prodName;
         room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;
         status = (data[i].time_serviced == null) ? 'PENDING' : 'FINISHED',
-        response.push({
-            "username": username,
-            "orders": order,
-            "room": room,
-            "status": status,
-            "id": data[i].id
-        });
+            response.push({
+                "username": username,
+                "orders": order,
+                "room": room,
+                "status": status,
+                "id": data[i].id
+            });
     }
 
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
@@ -233,12 +234,12 @@ app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
         username = data[i].user.first_name + ' ' + data[i].user.last_name;
         room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;
         status = (data[i].time_serviced == null) ? 'PENDING' : 'FINISHED',
-        response.push({
-            "username": username,
-            "room": room,
-            "status": status,
-            "id": data[i].id
-        });
+            response.push({
+                "username": username,
+                "room": room,
+                "status": status,
+                "id": data[i].id
+            });
     }
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -249,7 +250,6 @@ app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
 
 //WRITING QUERIES-----------------------------------------------------------------------
 app.post('/write/staff', verifyToken, isAdmin, async (req, res) => {
-    console.log(req.headers)
     let bool = await user.createStaff(req.body);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'POST');
@@ -259,12 +259,12 @@ app.post('/write/staff', verifyToken, isAdmin, async (req, res) => {
 });
 
 app.post('/write/announcement', verifyToken, isAdmin, async (req, res) => {
-        let bool = await announcements.createAnnouncements(req.body);
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-        res.setHeader('Access-Control-Allow-Methods', 'GET');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        res.send(JSON.stringify(bool));
+    let bool = await announcements.createAnnouncements(req.body);
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.send(JSON.stringify(bool));
 });
 
 //UPDATING QUERIES-----------------------------------------------------------------------

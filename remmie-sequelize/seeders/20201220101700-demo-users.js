@@ -27,6 +27,8 @@ module.exports = {
           user_type: user_type.toLowerCase(),
           email: count+'email'+user_type+'@example.com',
           password: password,
+          date_created: new Date(),
+          date_updated: new Date(),
           date_deleted: null,
         }
       );
