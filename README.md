@@ -6,6 +6,7 @@ To obtain a copy of this repository, execute the git clone https://github.com/ki
 
 To run the application, run both Node and Vue.
 
+Don't forget to run npm install in both remmie-vue and remmie-sequelize because we didn't push node_modules to save space :)
 ### Run Node js
 ```
 Open terminal and enter the following commands to run Node.
@@ -20,3 +21,9 @@ cd remmie-vue
 npm run serve
 ```
 
+
+### For putting test values
+```
+ npx sequelize-cli db:migrate
+ npx sequelize-cli db:seed:all
+```
