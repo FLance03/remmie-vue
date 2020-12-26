@@ -21,10 +21,13 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const demoAnnounce = [];
     for(let i=0; i<numMax; i++){
-      let title = str.random(50);
-      let description = str.random(100);
+      let title = str.random(20);
+      let description = '';
       let date = new Date();
       let time = convertDateTime(randomDate());
+      for (let j=0 ; j<5 ; j++){
+        description += str.random(25) + ' ';
+      }
       demoAnnounce.push({
         id: i+1,
         hotel_id: 1,
