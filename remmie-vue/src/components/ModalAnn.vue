@@ -132,15 +132,13 @@ export default {
 
         const url = "http://localhost:3000/write/announcement";
         axios
-          .post(url
-          // , {
-          //   headers: {
-          //     'Authorization': this.$store.state.token,
-          //     'Usertype': this.$store.state.usertype,
-          //     'Loggedin': this.$store.state.isUserLoggedIn,
-          //   }
-          // } 
-          ,body)
+          .post(url, body, {
+            headers: {
+              'Authorization': this.$store.state.token,
+              'Usertype': this.$store.state.usertype,
+              'Loggedin': this.$store.state.isUserLoggedIn,
+            }
+          })
           .then((res) => {
             if (res.data) {
               console.log("Announcement created");
@@ -150,7 +148,13 @@ export default {
               this.endttime = '';
               const fd = new FormData();
               fd.append('announcementimage', this.selectedFile, this.selectedFile.name);
-              axios.post('http://localhost:3000/upload/announcementimage',fd)
+              axios.post('http://localhost:3000/upload/announcementimage',fd, {
+                headers: {
+                  'Authorization': this.$store.state.token,
+                  'Usertype': this.$store.state.usertype,
+                  'Loggedin': this.$store.state.isUserLoggedIn,
+                }
+              })
               .then(res => {
                 this.selectedFile.name = null;
                 this.$emit("createAnnouncement");

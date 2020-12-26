@@ -72,7 +72,7 @@ function isStaff(req, res, next){
     next();
 }
 
-app.post('/upload/announcementimage',(req,res)=>{
+app.post('/upload/announcementimage', verifyToken, isAdmin, (req,res)=>{
     console.log('asfdfdsfsdf');
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -265,9 +265,10 @@ app.post('/write/staff', verifyToken, isAdmin, async (req, res) => {
 });
 
 app.post('/write/announcement', async (req, res) => {
+        console.log(req.headers);
         let bool = await announcements.createAnnouncements(req.body);
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         res.setHeader('Access-Control-Allow-Credentials', true);
         res.send(JSON.stringify(bool));
