@@ -74,11 +74,7 @@ export default {
       NavClick: function(index) {
         this.$emit('navigate',index);
       }
-<<<<<<< HEAD
     }
-=======
-    },
->>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
 }
 </script>
 

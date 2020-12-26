@@ -15,11 +15,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-<<<<<<< HEAD
     "jsonwebtoken": "^8.5.1",
-=======
     "formidable": "^1.2.2",
->>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "sequelize": "^6.3.5",

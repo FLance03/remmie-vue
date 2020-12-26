@@ -6,11 +6,8 @@ const session = require('express-session');
 const formidable = require('formidable');
 const fs = require('fs');
 const app = express();
-<<<<<<< HEAD
 const jwt = require('jsonwebtoken');
 const config = require('./config/config');
-=======
->>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -76,9 +73,6 @@ function isStaff(req, res, next){
     next();
 }
 
-<<<<<<< HEAD
-app.post('/authenticate', urlencodedParser, async (req, res) => {
-=======
 app.post('/upload/announcementimage',(req,res)=>{
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -104,7 +98,6 @@ app.get('/isloggedin', (req, res) => {
 });
 
 app.post('/authenticate',urlencodedParser, async (req, res) => {
->>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -128,17 +121,6 @@ app.post('/authenticate',urlencodedParser, async (req, res) => {
 
 
 //READING QUERIES-----------------------------------------------------------------------
-<<<<<<< HEAD
-=======
-app.get('/read/usertype', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    // console.log(usertype);
-    res.send(sess.user_type);
-});
->>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
 
 app.get('/read/lineitems', verifyToken, isAdmin, async (req,res)=>{
     const headers = req.headers;
