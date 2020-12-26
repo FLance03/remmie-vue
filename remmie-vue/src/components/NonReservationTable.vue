@@ -11,6 +11,7 @@
       <tbody>
         <tr v-for="(record, index) in infos" v-bind:key="index">
           <td v-for="(info, index) in record" v-bind:key="index">{{ info }}</td>
+
           <td v-if="service == true" class="table-data-padding-top">
             <div class="border-rounded-button-container" >
               <div v-if="record[2]=='PENDING' || record[3]=='PENDING'" class="border-rounded-button" v-on:click="confirm(index)">
@@ -44,14 +45,15 @@
 
 <script>
 export default {
-  props: ["page", "heads", "infos", "pageNumbers", "service"],
+  props: ["page", "heads", "infos", "pageNumbers", "service", "infoPerPage"],
   components: {},
   methods: {
     pageNumberClick: function (page) {
       this.$emit("changePage", page);
     },
-    confirm: function (id) {
-      this.$emit("confirm", id);
+    confirm: function (index) {
+      index = (this.page - 1) * this.infoPerPage + index;
+      this.$emit("confirm", index);
     },
   },
 };

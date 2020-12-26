@@ -4,6 +4,7 @@
     v-on:confirm="updateStatus($event)"
     v-bind:pageNumbers="pageNumbers"
     v-bind:page="currentPage"
+    v-bind:infoPerPage="infoPerPage"
     v-bind:heads="tableHead"
     v-bind:infos="tableData"
     v-bind:service="service"
@@ -20,12 +21,7 @@ export default {
     return {
       currentPage: 1,
       infoPerPage: 5,
-      tableHead: [
-        "Guest Name",
-        "Room",
-        "Status",
-        "Actions",
-      ],
+      tableHead: ["Guest Name", "Room", "Status", "Actions"],
       tableData: [],
       id: [],
       wholeData: [],
@@ -72,14 +68,23 @@ export default {
       let body = {
         id: this.id[index],
       };
+      console.log("--------index and id----------");
+      console.log(index);
+      console.log(this.id[index]);
+      console.log("---------------------");
+      let i;
+      for(i=0; i < this.id.length; i++){
+        console.log(this.id[i]);
+      }
+      console.log("--------ids---------");
       const url = "http://localhost:3000/update/roomorder_status";
       axios
         .post(url, body, {
           headers: {
-              'Authorization': this.$store.state.token,
-              'Usertype': this.$store.state.usertype,
-              'Loggedin': this.$store.state.isUserLoggedIn,
-          }
+            Authorization: this.$store.state.token,
+            Usertype: this.$store.state.usertype,
+            Loggedin: this.$store.state.isUserLoggedIn,
+          },
         })
         .then((res) => {
           if (res.data) {
@@ -90,7 +95,13 @@ export default {
             this.id = [];
             const url = "http://localhost:3000/read/roomcleaning";
             axios
-              .get(url)
+              .get(url, {
+                headers: {
+                  Authorization: this.$store.state.token,
+                  Usertype: this.$store.state.usertype,
+                  Loggedin: this.$store.state.isUserLoggedIn,
+                },
+              })
               .then((response) => {
                 var i, count;
                 for (count = 0, i = 0; i < response.data.length; i++, count++) {
@@ -117,10 +128,10 @@ export default {
     axios
       .get(url, {
         headers: {
-            'Authorization': this.$store.state.token,
-            'Usertype': this.$store.state.usertype,
-            'Loggedin': this.$store.state.isUserLoggedIn,
-        }
+          Authorization: this.$store.state.token,
+          Usertype: this.$store.state.usertype,
+          Loggedin: this.$store.state.isUserLoggedIn,
+        },
       })
       .then((response) => {
         var i, count;
