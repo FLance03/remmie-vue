@@ -1,4 +1,5 @@
 const { user } = require("../models/index");
+const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -24,6 +25,10 @@ exports.createStaff = async function createStaff(body){
     
     await user.create({
         email: body.email, password: hashedPassword, user_type: 'staff', first_name: body.first_name, last_name: body.last_name,
+        [Op.or]: [
+          { user_type: 'staff' },
+          { user_type: 'admin' },
+        ]
     }).catch(e => {
         bool = false;
         throw e;
@@ -36,6 +41,7 @@ exports.authenticate = async function authenticate(email, password) {
         raw: true,
         attributes: ['user_type','password','email'],
         where: {
+
             email: email,
         }
     }).then(value => {
