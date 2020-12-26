@@ -3,9 +3,14 @@ const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: true});
 const cors = require('cors');
 const session = require('express-session');
+const formidable = require('formidable');
+const fs = require('fs');
 const app = express();
+<<<<<<< HEAD
 const jwt = require('jsonwebtoken');
 const config = require('./config/config');
+=======
+>>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -71,7 +76,35 @@ function isStaff(req, res, next){
     next();
 }
 
+<<<<<<< HEAD
 app.post('/authenticate', urlencodedParser, async (req, res) => {
+=======
+app.post('/upload/announcementimage',(req,res)=>{
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        var oldpath = files.announcementimage.path;
+        var newpath = `${__dirname}/../remmie-vue/public/assets/images/` + files.announcementimage.name;
+        console.log(newpath);
+        fs.rename(oldpath, newpath, function (err) {
+          if (err) throw err;
+          res.send('File uploaded and moved!');
+        });
+    });
+    // const file = `${__dirname}/upload-folder/dramaticpenguin.MOV`;
+    // res.download(file); // Set disposition and send it.
+});
+app.get('/isloggedin', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    console.log(sess.usertype!=undefined )
+    console.log((sess.user_type=='staff' || sess.usertype=='admin'))
+    res.send(sess.user_type!=undefined && (sess.user_type=='staff' || sess.user_type=='admin'));
+});
+
+app.post('/authenticate',urlencodedParser, async (req, res) => {
+>>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -95,6 +128,17 @@ app.post('/authenticate', urlencodedParser, async (req, res) => {
 
 
 //READING QUERIES-----------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+app.get('/read/usertype', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    // console.log(usertype);
+    res.send(sess.user_type);
+});
+>>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
 
 app.get('/read/lineitems', verifyToken, isAdmin, async (req,res)=>{
     const headers = req.headers;
@@ -171,7 +215,7 @@ app.get('/read/bookinginformation', verifyToken, isAdmin, async (req, res) => {
 
 app.get('/read/roomorders', verifyToken, isStaff, async (req, res) => {
 
-    //Hi sir, this is from our other assumed hotel database smiley face :)
+    //Product List obtained from database from assumed Partnered Hotel
     let orders = [
         { id: 1, prodName: 'Burger King Deluxe Omega', price: 50.0, desc: 'Awesomeness in mouth' },
         { id: 2, prodName: 'Shanghai Lumpia', price: 225.0, desc: 'Awesomeness in mouth' },
@@ -250,7 +294,6 @@ app.post('/write/announcement', verifyToken, isAdmin, async (req, res) => {
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         res.setHeader('Access-Control-Allow-Credentials', true);
         res.send(JSON.stringify(bool));
-        console.log(e);
 });
 
 //UPDATING QUERIES-----------------------------------------------------------------------

@@ -12,7 +12,11 @@
     "core-js": "^3.6.5",
     "express-session": "^1.17.1",
     "jquery": "^3.5.1",
+<<<<<<< HEAD
     "jsonwebtoken": "^8.5.1",
+=======
+    "moment": "^2.29.1",
+>>>>>>> 39a42ed319ee5f6b23c3ee700ac1ee76e7fd84c7
     "vue": "^2.6.11",
     "vue-google-charts": "^0.3.3",
     "vue-router": "^3.4.9",

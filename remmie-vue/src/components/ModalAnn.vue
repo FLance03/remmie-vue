@@ -27,12 +27,13 @@
           <div class="modal-body">
             <div class="form">
               <form class="" v-on:submit.prevent>
-                <input type="file">
+                <input type="file" name="announcementimage" v-on:change="onFileSelected" required="required">
                 <input
                   v-model="title"
                   required
                   type="text"
                   placeholder="Insert title here"
+                  maxlength="60"
                 />
                 <textarea
                   v-model="description"
@@ -40,6 +41,7 @@
                   class="form-control mb-3"
                   placeholder="Event description"
                   rows="5"
+                  maxlength="200"
                 />
                 <p class="text-left">Start Time</p>
                 <input 
@@ -93,10 +95,15 @@ export default {
       title: "",
       description: "",
       starttime: "",
-      endtime: ""
+      endtime: "",
+      selectedFile: null,
     };
   },
   methods: {
+    onFileSelected: function(event){
+      this.selectedFile = event.target.files[0];
+      console.log(event);
+    },
     toggleModal: function () {
       this.modalShow = true;
     },
@@ -113,7 +120,8 @@ export default {
           title: this.title,
           description: this.description,
           starttime: this.starttime,
-          endtime: this.endtime
+          endtime: this.endtime,
+          filename: this.selectedFile.name,
         };
 
         const url = "http://localhost:3000/write/announcement";
@@ -132,7 +140,14 @@ export default {
               this.description = '';
               this.starttime = '';
               this.endttime = '';
-              this.$emit("createAnnouncement");
+              const fd = new FormData();
+              fd.append('announcementimage', this.selectedFile, this.selectedFile.name);
+              axios.post('http://localhost:3000/upload/announcementimage',fd)
+              .then(res => {
+                this.selectedFile.name = null;
+                this.$emit("createAnnouncement");
+                console.log(res);
+              }).catch( e => console.log(e))
             } else {
               console.log("Announcement Creation Error.");
             }

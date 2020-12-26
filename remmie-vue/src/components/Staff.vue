@@ -1,12 +1,12 @@
 <template>
   <div>
-    <gen-nav v-if="page == 0" v-bind:type="accountType" v-bind:pages="pages" v-on:navigate="changePage($event)">
+    <gen-nav v-if="page == 0" v-bind:type="accountType" v-bind:pages="pages" v-bind:icons="icons" v-on:navigate="changePage($event)">
       <bookings></bookings>
     </gen-nav>
-    <gen-nav v-else-if="page == 1" v-bind:type="accountType" v-bind:pages="pages" v-on:navigate="changePage($event)">
+    <gen-nav v-else-if="page == 1" v-bind:type="accountType" v-bind:pages="pages" v-bind:icons="icons" v-on:navigate="changePage($event)">
       <room-orders></room-orders>
     </gen-nav>
-    <gen-nav v-else-if="page == 2" v-bind:type="accountType" v-bind:pages="pages" v-on:navigate="changePage($event)">
+    <gen-nav v-else-if="page == 2" v-bind:type="accountType" v-bind:pages="pages" v-bind:icons="icons" v-on:navigate="changePage($event)">
       <room-cleaning></room-cleaning>
     </gen-nav>
   </div>
@@ -24,6 +24,7 @@ export default {
       page: 0,
       accountType: 'STAFF',
       pages: ['Bookings','Room Orders','Room Cleaning', 'Logout'],
+      icons: ['lnr lnr-bookmark','lnr lnr-dinner','lnr lnr-trash', 'lnr lnr-exit'],
     };
   },
   components: {

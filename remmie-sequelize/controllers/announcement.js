@@ -26,7 +26,7 @@ exports.createAnnouncements = async function createStaff(body){
         title: body.title, 
         start_time: body.starttime, 
         end_time: body.endtime,
-        image: "food1.jpg",
+        image: body.filename,
         description: body.description,
         date_created: date,
         date_updated: date,

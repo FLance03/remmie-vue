@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const numUsers = 200;
+const numUsers = 50;
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -18,6 +18,8 @@ module.exports = {
       date.setDate(date.getDate() + i);
       let salt = bcrypt.genSaltSync(saltRounds);
       let password = bcrypt.hashSync(count+'password'+user_type,salt);
+      console.log(count+'email'+user_type+'@example.com');
+      console.log(count+'password'+user_type);
       demoUsers.push(
         {
           id: i+1,
