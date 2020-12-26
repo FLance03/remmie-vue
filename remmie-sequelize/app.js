@@ -229,7 +229,6 @@ app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
     let username;
     let room;
     let status;
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
         username = data[i].user.first_name + ' ' + data[i].user.last_name;
         room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;

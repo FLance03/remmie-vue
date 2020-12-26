@@ -28,7 +28,7 @@ module.exports = {
       let price = between(100, 1000);
       let quantity = between(1, 10);
       demoLineItems.push({
-        id: i,
+        id: i+1,
         room_service_id: room_service_id,
         product_id: product_id,
         price: price,

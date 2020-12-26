@@ -43,9 +43,7 @@ module.exports = {
           user_id: i%100 + 101,
           date_checkin: dateCheckIn,
           date_checkout: dateCheckOut,
-          date_created: date,
-          date_updated: date,
-          date_deleted: i%3==0 ? date : null,
+          date_deleted: null,
         }
       );
     }

@@ -27,8 +27,6 @@ module.exports = {
           user_type: user_type.toLowerCase(),
           email: count+'email'+user_type+'@example.com',
           password: password,
-          date_created: date,
-          date_updated: date,
           date_deleted: null,
         }
       );
@@ -38,6 +36,7 @@ module.exports = {
     let password = bcrypt.hashSync('admin',salt);
     demoUsers.push(
       {
+        id: 500,
         first_name: 'admin',
         last_name: 'admin',
         user_type: 'admin',

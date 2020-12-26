@@ -19,6 +19,7 @@ module.exports = {
       let timeServiced = randomDate(start, end);
       demoRoomServices.push(
         {
+          id: i+1,
           user_id: numRoomServices+1+i,
           reservation_id: i,
           service_type: i%2==0 ? 0 : 1, // 0 if room cleaning, 1 if room order
