@@ -27,7 +27,6 @@
           <div class="modal-body">
             <div class="form">
               <form class="" v-on:submit.prevent>
-                <input type="file" name="announcementimage" v-on:change="onFileSelected" required="required">
                 <input
                   v-model="title"
                   required
@@ -56,6 +55,13 @@
                   required
                   class="form-control"
                   type="datetime-local"
+                />
+                <p class="text-left">Announcement Photo</p>
+                <input 
+                  type="file" 
+                  name="announcementimage" 
+                  v-on:change="onFileSelected" 
+                  required="required"
                 />
                 <div class="modal-footer">
                   <button

@@ -37,7 +37,6 @@ export default {
       total: [],
       chartData: [
         ['Month', 'Sales'],
-        
       ],
       chartOptions: {
         chart: {
@@ -78,9 +77,14 @@ export default {
             this.total[date.getMonth()] += data["price"]*data["quantity"];
           }
         }
-        this.pushArray(this.chartData, ['October', this.total[9]]);
-        this.pushArray(this.chartData, ['November', this.total[10]]);
-        this.pushArray(this.chartData, ['December', this.total[11]]);
+        let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+        for (let i=0 ; i<12 ; i++){
+          if (this.total[i] != undefined){
+            this.pushArray(this.chartData, [months[i], this.total[i]]);
+          }
+        }
+        // this.pushArray(this.chartData, ['November', this.total[10]]);
+        // this.pushArray(this.chartData, ['December', this.total[11]]);
       })
       .catch((e) => console.log(e));
   },
