@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
+import createPersistedState from "vuex-persistedstate";
 
 export default new Vuex.Store({
     strict: true,
@@ -35,4 +36,6 @@ export default new Vuex.Store({
             commit("destroySession")
         }
     },
+
+    plugins: [createPersistedState()]
 })
