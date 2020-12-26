@@ -71,7 +71,7 @@ function isStaff(req, res, next){
     next();
 }
 
-app.post('/upload/announcementimage',(req,res)=>{
+app.post('/upload/announcementimage', (req,res)=>{
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         var oldpath = files.announcementimage.path;
@@ -229,7 +229,6 @@ app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
     let username;
     let room;
     let status;
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
         username = data[i].user.first_name + ' ' + data[i].user.last_name;
         room = 'Room ' + data[i].reservation.room_number + ' Floor #' + data[i].reservation.room_floor;
@@ -259,10 +258,11 @@ app.post('/write/staff', verifyToken, isAdmin, async (req, res) => {
     res.send(JSON.stringify(bool));
 });
 
-app.post('/write/announcement', verifyToken, isAdmin, async (req, res) => {
+app.post('/write/announcement', async (req, res) => {
+        console.log(req.headers);
         let bool = await announcements.createAnnouncements(req.body);
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Methods', 'POST');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         res.setHeader('Access-Control-Allow-Credentials', true);
         res.send(JSON.stringify(bool));
