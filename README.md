@@ -12,6 +12,7 @@ N O T E      F O R     S I R     E A N:
 Product List obtained from database from assumed partnered hotel.
 This data is not part of our database definitions but is needed for display in staff accounts.
 ```
+// in app.js
 let orders = [
         { id: 1, prodName: 'Burger King Deluxe Omega', price: 50.0, desc: 'Awesomeness in mouth' },
         { id: 2, prodName: 'Shanghai Lumpia', price: 225.0, desc: 'Awesomeness in mouth' },
