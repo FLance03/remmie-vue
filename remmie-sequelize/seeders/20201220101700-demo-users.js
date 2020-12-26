@@ -29,7 +29,7 @@ module.exports = {
           password: password,
           date_created: date,
           date_updated: date,
-          date_deleted: i%2==0 ? date : null,
+          date_deleted: null,
         }
       );
     }

@@ -11,10 +11,9 @@ function randomDate(start, end) {
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const demoRoomServices = [];
-    let count = 1;
     let start = new Date("July 1, 2020 00:00:00");
     let end = new Date("December 31, 2020 00:00:00");
-    for (let i=0 ; i<numUsers ; i++,count++){
+    for (let i=0 ; i<numUsers ; i++){
       let date = new Date();
       let user_type = i<numUsers/2 ? 'Staff' : 'Guest';
       let timeServiced = randomDate(start, end);
@@ -22,7 +21,7 @@ module.exports = {
         {
           user_id: numRoomServices+1+i,
           reservation_id: i,
-          service_type: i%2==0 ? 0 : 1,
+          service_type: i%2==0 ? 0 : 1, // 0 if room cleaning, 1 if room order
           time_serviced: i%4==0 ? null : timeServiced,
         }
       );
