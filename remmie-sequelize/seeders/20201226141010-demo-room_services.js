@@ -23,7 +23,7 @@ module.exports = {
           user_id: numRoomServices+1+i,
           reservation_id: i,
           service_type: i%2==0 ? 0 : 1, // 0 if room cleaning, 1 if room order
-          time_serviced: i%4==0 ? null : timeServiced,
+          time_serviced: null,
         }
       );
     }
