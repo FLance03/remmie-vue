@@ -184,7 +184,7 @@ app.get('/read/bookinginformation', verifyToken, async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomorders', verifyToken, isStaff, async (req, res) => {
+app.get('/read/roomorders', async (req, res) => {
 
     //Product List obtained from database from assumed Partnered Hotel
     let orders = [
@@ -224,7 +224,7 @@ app.get('/read/roomorders', verifyToken, isStaff, async (req, res) => {
     res.send(JSON.stringify(response));
 });
 
-app.get('/read/roomcleaning', verifyToken, isStaff, async (req, res) => {
+app.get('/read/roomcleaning', async (req, res) => {
     let data = await room_service.readCleaning();
     let response = [];
     let username;
