@@ -5,6 +5,10 @@ module.exports = (sequelize,DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
+    hotel_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,

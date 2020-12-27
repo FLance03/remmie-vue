@@ -10,6 +10,7 @@ exports.readStaff = async function readStaff(){
         where: {
             user_type: 'staff',
         },
+        order: [['date_created', 'DESC']]
     }).then(value => {
         retVal = value;
     }).catch(e => {

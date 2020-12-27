@@ -4,6 +4,7 @@
     v-on:confirm="updateStatus($event)"
     v-bind:pageNumbers="pageNumbers"
     v-bind:page="currentPage"
+    v-bind:infoPerPage="infoPerPage"
     v-bind:heads="tableHead"
     v-bind:infos="tableData"
     v-bind:service="service"

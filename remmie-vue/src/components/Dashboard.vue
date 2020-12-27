@@ -4,7 +4,8 @@
       <div id="row">
         <div id="col-mb-5">
           <div id="card">            
-            <GChart
+            <GChart 
+              v-show="checkLength()"
               type="ColumnChart"
               :data="barData"
               :options="chartOptionsBar"
@@ -65,6 +66,9 @@ export default {
     },
     pushArray(arr1, arr2){
       arr1.push(arr2);
+    },
+    checkLength(){
+      return this.total.length > 0 ? true : false;
     }
   },
   beforeMount() {
@@ -94,6 +98,7 @@ export default {
         for(let i=6; i<12; i++){
           this.pushArray(this.barData, [month[i], this.total[i]]);
         }
+        console.log(this.total.length)
       }).catch((e) => console.log(e));
     axios
       .get(urlreservation, {

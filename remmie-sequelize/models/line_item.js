@@ -13,12 +13,23 @@ module.exports = (sequelize,DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    date_created: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    date_updated: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    date_deleted: {
+      type: DataTypes.DATE,
+    },
   },
   {
     tableName: 'line_items',
-    createdAt: false,
-    updatedAt: false,
-    deletedAt: false,
+    createdAt: 'date_created',
+    updatedAt: 'date_updated',
+    deletedAt: 'date_deleted',
   });
   return line_item;
 }

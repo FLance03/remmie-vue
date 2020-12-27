@@ -4,11 +4,13 @@ npx sequelize-cli db:migrate:undo:all
 
 npx sequelize-cli seed:generate --name demo-reservation
 npx sequelize-cli db:seed:all
+npx sequelize-cli db:seed --seed 20201226141010-demo-room_services.js
 npx sequelize-cli db:seed:undo:all
+npx sequelize-cli db:seed:undo --seed 20201226141010-demo-room_services.js
 
 
-module.exports = {
-    authentication: {
-        jwtSecret: 'thisisasecretmessage'
-    }
-}
+2emailStaff@example.com
+2passwordStaff
+
+
+SELECT `room_service`.`id`, `room_service`.`time_serviced`, `user`.`id` AS `user.id`, `user`.`first_name` AS `user.first_name`, `user`.`last_name` AS `user.last_name`, `reservation`.`id` AS `reservation.id`, `reservation`.`room_number` AS `reservation.room_number`, `reservation`.`room_floor` AS `reservation.room_floor` FROM `room_services` AS `room_service` INNER JOIN `users` AS `user` ON `room_service`.`user_id` = `user`.`id` AND (`user`.`date_deleted` IS NULL) INNER JOIN `reservations` AS `reservation` ON `room_service`.`reservation_id` = `reservation`.`id` AND (`reservation`.`date_deleted` IS NULL) WHERE (`room_service`.`date_deleted` IS NULL AND `room_service`.`service_type`!=0);
